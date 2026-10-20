@@ -247,16 +247,7 @@ function renderTodayCalendarTrending() {
     { sign: 'মীন', symbol: '♓', text: 'মানসিক শান্তি ও আধ্যাত্মিক প্রফুল্লতা' }
   ];
 
-  // Hot Trending News Topics
-  const trendingTopics = [
-    'নির্বাচন সংস্কার',
-    'ডলার রেট ১২২.২০ ৳',
-    'স্বর্ণের ভরি ১,৪৪,৫০০ ৳',
-    'বিপিএল ও ক্রিকেট',
-    'এআই বিপ্লব',
-    'কৃষি অর্থনীতি',
-    'বিসিএস ও নিয়োগ'
-  ];
+
 
   // Build Pill Items
   const items = [
@@ -320,20 +311,12 @@ function renderTodayCalendarTrending() {
       <span class="cal-pill-val">১২:০০-০১:৩০</span>
     </div>`,
 
-    // 9. Rashifals
+    // 9. Rashifals (১২ রাশিফল)
     ...rashifalList.map(r => `
       <div class="cal-pill cal-pill-rashi" onclick="showToast('আজকের ${r.sign} রাশিফল: ${r.text}')">
         <span class="cal-pill-icon">${r.symbol}</span>
         <span class="cal-pill-label">${r.sign}:</span>
         <span class="cal-pill-val">${r.text}</span>
-      </div>
-    `),
-
-    // 10. Trending Topics
-    ...trendingTopics.map(tag => `
-      <div class="cal-pill cal-pill-trend" onclick="searchTopic('${tag.replace(/^[#\s]+/, '').split(' ')[0]}')">
-        <span class="cal-pill-icon">🔥</span>
-        <span class="cal-pill-val"># ${tag}</span>
       </div>
     `)
   ];
