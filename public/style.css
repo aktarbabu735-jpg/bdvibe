@@ -3439,16 +3439,32 @@ body.dark-theme .msn-news-card .time-published {
 }
 
 .msn-news-card .card-title {
-  font-size: 16.5px;
+  font-size: 15.5px;
   font-weight: 700;
   line-height: 1.34;
   color: #1b1b1b;
   margin: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: color 0.15s ease;
+}
+
+.msn-news-card .card-snippet {
+  font-family: var(--font-body);
+  font-size: 12.8px;
+  line-height: 1.4;
+  color: #616161;
+  margin: 4px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+body.dark-theme .msn-news-card .card-snippet {
+  color: #a19f9d;
 }
 
 body.dark-theme .msn-news-card .card-title {

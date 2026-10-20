@@ -905,9 +905,27 @@ function handleVideoCardHover(cardEl, isHover) {
 }
 
 function renderNewsCard(item, isSpan2 = false) {
-  const cleanSource = cleanSourceName(item.source);
+  if (!item || !item.title) return '';
+
+  const cleanTitle = (item.title || '').trim();
+  const rawSnippet = (item.description || item.content || '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/[\r\n\t]+/g, ' ')
+    .replace(/\s*(?:বিস্তারিত|আরও পড়ুন|পড়ুন)\s*$/gi, '')
+    .trim();
+
+  // Strict Authenticity & Clarity Filter: Always avoid vague or unphraseable news
+  if (cleanTitle.length < 18) return '';
+  if (/Executive summary/i.test(cleanTitle) || /accessible\)/i.test(cleanTitle) || /বিজ্ঞপ্তি/i.test(cleanTitle)) {
+    return '';
+  }
   const videoId = getCardVideoId(item);
-  const isLiveItem = Boolean(videoId && (item.category === 'live' || (item.title && (item.title.includes('সরাসরি') || item.title.includes('লাইভ') || item.title.toLowerCase().includes('live')))));
+  if (!videoId && rawSnippet.length < 40) {
+    return ''; // Discard if news cannot be phrased properly
+  }
+
+  const cleanSource = cleanSourceName(item.source);
+  const isLiveItem = Boolean(videoId && (item.category === 'live' || (cleanTitle && (cleanTitle.includes('সরাসরি') || cleanTitle.includes('লাইভ') || cleanTitle.toLowerCase().includes('live')))));
   const isTV = Boolean(videoId);
   const isAudio = (!isTV && cleanSource.includes('বিবিসি'));
   const initial = cleanSource.charAt(0);
@@ -925,6 +943,8 @@ function renderNewsCard(item, isSpan2 = false) {
   const isDisliked = userReaction === 'dislike';
   const baseLikes = 60 + ((item.id * 17) % 850) + (isLiked ? 1 : 0);
   const likesCount = toBengaliNumber(baseLikes);
+
+  const snippet = rawSnippet ? (rawSnippet.length > 85 ? rawSnippet.slice(0, 85) + '...' : rawSnippet) : '';
 
   return `
     <article class="msn-news-card ${isSpan2 ? 'card-span-2' : 'card-span-1'} ${isTV ? 'card-type-video' : isAudio ? 'card-type-audio' : 'card-type-news'}"
@@ -955,7 +975,8 @@ function renderNewsCard(item, isSpan2 = false) {
           <span class="time-published">${isLiveItem ? 'সরাসরি সম্প্রচার' : formatRelativeTimeBn(item.timestamp)}</span>
         </div>
 
-        <h3 class="card-title">${escapeHtml(item.title)}</h3>
+        <h3 class="card-title">${escapeHtml(cleanTitle)}</h3>
+        ${snippet ? `<p class="card-snippet">${escapeHtml(snippet)}</p>` : ''}
 
         <div class="card-footer">
           <div class="card-reactions-group">

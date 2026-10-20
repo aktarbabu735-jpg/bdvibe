@@ -260,6 +260,10 @@ module.exports = {
       params.push(s, s, s);
     }
 
+    // Strict Authenticity & Clarity Filter: Always avoid vague or unphraseable news
+    whereClause += " AND length(title) >= 18 AND length(description) >= 50";
+    whereClause += " AND title NOT LIKE '%বিজ্ঞপ্তি%' AND title NOT LIKE '%Executive summary%' AND title NOT LIKE '%accessible)%'";
+
     // Total count for pagination & statistics
     const countStmt = db.prepare(`SELECT COUNT(*) as count FROM articles ${whereClause}`);
     const total = countStmt.get(...params).count;
@@ -284,17 +288,21 @@ module.exports = {
   },
 
   getHeroArticles() {
-    // 1. Lead story: most recent article with image
+    // 1. Lead story: most recent authentic article with clear image & description
     const lead = db.prepare(`
       SELECT * FROM articles 
       WHERE image_url IS NOT NULL AND image_url != ''
+        AND length(title) >= 18 AND length(description) >= 55
+        AND title NOT LIKE '%বিজ্ঞপ্তি%' AND title NOT LIKE '%Executive summary%'
       ORDER BY timestamp DESC LIMIT 1
-    `).get() || db.prepare('SELECT * FROM articles ORDER BY timestamp DESC LIMIT 1').get();
+    `).get() || db.prepare('SELECT * FROM articles WHERE length(description) >= 50 ORDER BY timestamp DESC LIMIT 1').get();
 
-    // 2. Sub-leads (4 articles) - STRICT SOURCE DIVERSITY
+    // 2. Sub-leads (4 articles) - STRICT SOURCE DIVERSITY & AUTHENTICITY
     const recentCandidates = db.prepare(`
       SELECT * FROM articles 
       WHERE id != ? AND image_url IS NOT NULL AND image_url != ''
+        AND length(title) >= 18 AND length(description) >= 55
+        AND title NOT LIKE '%বিজ্ঞপ্তি%' AND title NOT LIKE '%Executive summary%'
       ORDER BY timestamp DESC LIMIT 60
     `).all(lead ? lead.id : 0);
 
@@ -321,9 +329,11 @@ module.exports = {
       }
     }
 
-    // 3. Trending / Top Stories (6 articles) - DIVERSE SOURCES
+    // 3. Trending / Top Stories (6 articles) - DIVERSE SOURCES & CLEAR NEWS
     const trendingPool = db.prepare(`
       SELECT * FROM articles 
+      WHERE length(title) >= 18 AND length(description) >= 55
+        AND title NOT LIKE '%বিজ্ঞপ্তি%' AND title NOT LIKE '%Executive summary%'
       ORDER BY timestamp DESC LIMIT 60
     `).all();
 

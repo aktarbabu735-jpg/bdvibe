@@ -87,39 +87,99 @@ const categoryFallbackImages = {
   national: 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=800&q=80'
 };
 
-function stripHtml(html) {
-  if (!html) return '';
-  return html
+function cleanNewsText(text) {
+  if (!text) return '';
+  return text
     .replace(/<[^>]+>/g, '')
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
     .replace(/&quot;/g, '"')
+    .replace(/&lsquo;/g, "'")
+    .replace(/&rsquo;/g, "'")
+    .replace(/&ldquo;/g, '"')
+    .replace(/&rdquo;/g, '"')
+    .replace(/&mdash;/g, '—')
     .replace(/&#39;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
+    .replace(/[\r\n\t]+/g, ' ')
+    .replace(/\s*(?:বিস্তারিত|আরও পড়ুন|পড়ুন|ছবিতে দেখুন|ফাইল ছবি)\s*$/gi, '')
+    .replace(/\s*\.\.\.\s*$/, '...')
+    .replace(/\s{2,}/g, ' ')
     .trim();
 }
 
+function stripHtml(html) {
+  return cleanNewsText(html);
+}
+
+function isAuthenticClearNews(title, desc, link) {
+  if (!title || !link) return false;
+  const t = (title || '').trim();
+  const d = (desc || '').trim();
+
+  // 1. Minimum meaningful title length (18 chars)
+  if (t.length < 18) return false;
+
+  // 2. Reject vague, document, report scraps or non-news circulars
+  const vaguePatterns = [
+    /বিস্তারিত আসছে/i,
+    /Executive summary/i,
+    /accessible\)/i,
+    /আজকের রাশিফল/i,
+    /আজকের দিনটি/i,
+    /বিজ্ঞপ্তি/i,
+    /বিজ্ঞাপন/i,
+    /ফাইল ছবি/i,
+    /ছবিতে দেখুন/i,
+    /undefined/i,
+    /^\s*\.{3,}/
+  ];
+  if (vaguePatterns.some(p => p.test(t) || p.test(d))) return false;
+
+  // 3. Must have meaningful Bengali characters (for national news)
+  const hasBengali = /[\u0980-\u09FF]/.test(t);
+  if (!hasBengali && t.length < 35) return false;
+
+  // 4. Description must be coherent and at least 55 characters with at least 8 words
+  // "যেগুলোর নিউজ ডেটা থেকে ফ্রেজ করতে পারতেছে না, সেই ডেটাগুলো সবসময় এভয়েড করতে হবে"
+  if (d.length < 55) return false;
+  const words = d.split(/\s+/).filter(w => w.length > 1);
+  if (words.length < 8) return false;
+
+  return true;
+}
+
 function extractImageUrl(item) {
+  let imgUrl = null;
   if (item.enclosure && item.enclosure.url && item.enclosure.url.startsWith('http')) {
-    return item.enclosure.url;
-  }
-  if (Array.isArray(item.mediaContent) && item.mediaContent.length > 0) {
+    imgUrl = item.enclosure.url;
+  } else if (Array.isArray(item.mediaContent) && item.mediaContent.length > 0) {
     const mc = item.mediaContent[0];
-    if (mc.url) return mc.url;
-    if (mc.$ && mc.$.url) return mc.$.url;
-  }
-  if (item.mediaGroup && item.mediaGroup['media:thumbnail'] && item.mediaGroup['media:thumbnail'][0]) {
+    if (mc.url) imgUrl = mc.url;
+    else if (mc.$ && mc.$.url) imgUrl = mc.$.url;
+  } else if (item.mediaGroup && item.mediaGroup['media:thumbnail'] && item.mediaGroup['media:thumbnail'][0]) {
     const t = item.mediaGroup['media:thumbnail'][0];
-    if (t.url) return t.url;
-    if (t.$ && t.$.url) return t.$.url;
-  }
-  const htmlToSearch = (item.contentEncoded || '') + ' ' + (item.content || '') + ' ' + (item.description || '');
-  const match = htmlToSearch.match(/<img[^>]+src=["'](https?:\/\/[^"']+)["']/i);
-  if (match && match[1]) {
-    if (!match[1].includes('1x1') && !match[1].includes('feedburner')) {
-      return match[1];
+    if (t.url) imgUrl = t.url;
+    else if (t.$ && t.$.url) imgUrl = t.$.url;
+  } else {
+    const htmlToSearch = (item.contentEncoded || '') + ' ' + (item.content || '') + ' ' + (item.description || '');
+    const match = htmlToSearch.match(/<img[^>]+src=["'](https?:\/\/[^"']+)["']/i);
+    if (match && match[1]) {
+      if (!match[1].includes('1x1') && !match[1].includes('feedburner')) {
+        imgUrl = match[1];
+      }
     }
+  }
+
+  if (imgUrl) {
+    // Automatically upgrade Ittefaq/Deshrupantor 300x300 cache to crisp 640x360 landscape
+    if (imgUrl.includes('/contents/cache/images/300x300x1/')) {
+      imgUrl = imgUrl.replace('/contents/cache/images/300x300x1/', '/contents/cache/images/640x360x1/');
+    }
+    // Reject tiny icons/avatars
+    if (imgUrl.includes('150x150') || imgUrl.includes('100x100') || imgUrl.includes('favicon')) {
+      return null;
+    }
+    return imgUrl;
   }
   return null;
 }
@@ -327,6 +387,12 @@ async function updateFeeds() {
 
         const cleanTitle = stripHtml(item.title);
         const cleanDesc = stripHtml(item.contentSnippet || item.content || item.summary || item.description || '');
+
+        // Strict Authenticity & Clarity Filter: Always avoid vague or unphraseable news!
+        if (!isAuthenticClearNews(cleanTitle, cleanDesc, item.link)) {
+          continue;
+        }
+
         const category = classifyArticle(item, feedConfig.defaultCategory);
         let imageUrl = extractImageUrl(item);
         if (!imageUrl) {
