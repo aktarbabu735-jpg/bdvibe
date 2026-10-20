@@ -680,7 +680,11 @@ function renderSubLeads(subLeads) {
   container.innerHTML = subLeads.map(item => {
     const isTV = (item.source && (item.source.includes('টিভি') || item.source.includes('TV') || item.source.includes('সময়') || item.source.includes('চ্যানেল') || item.source.includes('ডিবিসি') || item.source.includes('একাত্তর')));
     const initial = (item.source || 'বি').charAt(0);
-    const snippet = item.description || (item.content ? item.content.slice(0, 110) + '...' : '');
+    let cleanSnippet = item.description || (item.content ? item.content.slice(0, 110) + '...' : '');
+    if (cleanSnippet.startsWith(item.title)) {
+      cleanSnippet = cleanSnippet.slice(item.title.length).replace(/^[\s—–:-]+/, '').trim();
+    }
+    const snippet = cleanSnippet;
     return `
       <article class="msn-news-card card-span-1 ${isTV ? 'card-type-video' : 'card-type-news'}" onclick="handleCardClick(${item.id})">
         <div class="card-media">
@@ -944,7 +948,16 @@ function renderNewsCard(item, isSpan2 = false) {
   const baseLikes = 60 + ((item.id * 17) % 850) + (isLiked ? 1 : 0);
   const likesCount = toBengaliNumber(baseLikes);
 
-  const snippet = rawSnippet ? (rawSnippet.length > 85 ? rawSnippet.slice(0, 85) + '...' : rawSnippet) : '';
+  // Strict Heading and Sub-Heading Duplication Prevention:
+  let cleanSnippet = rawSnippet;
+  if (cleanSnippet.startsWith(cleanTitle)) {
+    cleanSnippet = cleanSnippet.slice(cleanTitle.length).replace(/^[\s—–:-]+/, '').trim();
+  }
+  if (cleanSnippet.toLowerCase() === cleanTitle.toLowerCase() || cleanSnippet.length < 15) {
+    cleanSnippet = isTV ? `${cleanSource}-এর বিশেষ সরাসরি সম্প্রচার ও সর্বশেষ ভিডিও প্রতিবেদন।` : '';
+  }
+
+  const snippet = cleanSnippet ? (cleanSnippet.length > 85 ? cleanSnippet.slice(0, 85) + '...' : cleanSnippet) : '';
 
   return `
     <article class="msn-news-card ${isSpan2 ? 'card-span-2' : 'card-span-1'} ${isTV ? 'card-type-video' : isAudio ? 'card-type-audio' : 'card-type-news'}"
@@ -1171,7 +1184,69 @@ function getNextTestAd(forceSpan2 = false) {
   return renderTestAdCard(ad, forceSpan2);
 }
 
-function renderDenseCards(articles, isFirstBatch = false) {
+// Global Sets to Guarantee 100% Zero-Duplication across the Entire Website
+const renderedArticleIds = new Set();
+const renderedArticleTitles = new Set();
+
+function normalizeTitleKey(t) {
+  if (!t) return '';
+  return t
+    .replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '')
+    .replace(/[|–—\-\[\]\(\)'"‘’“”\s]/g, '')
+    .trim()
+    .toLowerCase();
+}
+
+function deduplicateAndDiversify(rawArticles) {
+  const unique = [];
+  for (const item of rawArticles) {
+    if (!item || !item.id || !item.title) continue;
+    const idKey = Number(item.id);
+    const titleKey = normalizeTitleKey(item.title);
+
+    // Skip if already rendered anywhere on the current page
+    if (renderedArticleIds.has(idKey) || renderedArticleTitles.has(titleKey)) {
+      continue;
+    }
+
+    renderedArticleIds.add(idKey);
+    renderedArticleTitles.add(titleKey);
+    unique.push(item);
+  }
+
+  // Source Diversity: prevent 3 consecutive cards from the exact same channel/newspaper
+  const diversified = [];
+  const backlog = [...unique];
+  let lastSource = '';
+  let sameSourceCount = 0;
+
+  while (backlog.length > 0) {
+    let pickIdx = -1;
+    for (let i = 0; i < backlog.length; i++) {
+      const src = backlog[i].source || '';
+      if (src !== lastSource || sameSourceCount < 2) {
+        pickIdx = i;
+        break;
+      }
+    }
+    if (pickIdx === -1) pickIdx = 0;
+
+    const chosen = backlog.splice(pickIdx, 1)[0];
+    const src = chosen.source || '';
+    if (src === lastSource) {
+      sameSourceCount++;
+    } else {
+      lastSource = src;
+      sameSourceCount = 1;
+    }
+    diversified.push(chosen);
+  }
+
+  return diversified;
+}
+
+function renderDenseCards(rawArticles, isFirstBatch = false) {
+  const articles = deduplicateAndDiversify(rawArticles);
   let cardsHtml = '';
 
   if (isFirstBatch && articles.length >= 7) {
@@ -1216,6 +1291,11 @@ function renderDenseCards(articles, isFirstBatch = false) {
 async function loadDenseStream(append = false) {
   if (isStreamLoading) return;
   isStreamLoading = true;
+
+  if (!append) {
+    renderedArticleIds.clear();
+    renderedArticleTitles.clear();
+  }
 
   const btn = document.getElementById('streamLoadMoreBtn');
   if (btn) {
@@ -1372,6 +1452,8 @@ function filterByCategory(categoryKey) {
   state.search = '';
   streamOffset = 0;
   streamHasMore = true;
+  renderedArticleIds.clear();
+  renderedArticleTitles.clear();
 
   const searchInput = document.getElementById('searchInput');
   const searchClearBtn = document.getElementById('searchClearBtn');
@@ -1400,6 +1482,8 @@ function filterByCategory(categoryKey) {
 function executeSearch() {
   streamOffset = 0;
   streamHasMore = true;
+  renderedArticleIds.clear();
+  renderedArticleTitles.clear();
 
   const filterBanner = document.getElementById('filterStatusBanner');
   const filterStatusTitle = document.getElementById('filterStatusTitle');
@@ -1420,6 +1504,8 @@ function resetToHome() {
   state.search = '';
   streamOffset = 0;
   streamHasMore = true;
+  renderedArticleIds.clear();
+  renderedArticleTitles.clear();
 
   const searchInput = document.getElementById('searchInput');
   const searchClearBtn = document.getElementById('searchClearBtn');

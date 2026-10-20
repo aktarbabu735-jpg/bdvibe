@@ -499,6 +499,7 @@ async function updateFeeds() {
 
         // 2. Also save as an Article so TV News shows up inside news categories & feeds!
         const tvCategory = isLive ? 'live' : classifyArticle(vItem, 'national');
+        const tvSnippet = `${yt.channel}-এর বিশেষ সরাসরি সম্প্রচার ও সর্বশেষ ভিডিও বুলেটিন। সমসাময়িক জাতীয় গুরুত্বপূর্ণ খবরের বিস্তারিত প্রতিবেদন।`;
         const savedArticle = saveArticle({
           guid: `tv-${rawVideoId}`,
           title: cleanTitle,
@@ -506,7 +507,7 @@ async function updateFeeds() {
           source: yt.channel,
           source_id: yt.id,
           category: tvCategory,
-          description: `${cleanTitle} — ${yt.channel} বিশেষ ভিডিও বুলেটিন ও সর্বশেষ টিভি সংবাদ।`,
+          description: tvSnippet,
           content: `${cleanTitle} — ${yt.channel} সরাসরি সম্প্রচার ও বিশেষ ভিডিও বুলেটিন। বিস্তারিত দেখতে ভিডিও প্রতিবেদনটি দেখুন।`,
           image_url: thumbnail,
           pub_date: pubDateObj.toISOString(),

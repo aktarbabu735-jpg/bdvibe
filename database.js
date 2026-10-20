@@ -146,6 +146,19 @@ if (countAds.count === 0) {
 module.exports = {
   db,
   saveArticle(article) {
+    if (!article || !article.title) return false;
+    const cleanTitle = article.title.trim();
+
+    // Strict De-duplication: Reject duplicate titles or guids
+    const existing = db.prepare('SELECT id, guid FROM articles WHERE title = ? OR guid = ?').get(cleanTitle, article.guid);
+    if (existing) {
+      if (article.guid === existing.guid) {
+        db.prepare('UPDATE articles SET description = ?, image_url = COALESCE(?, image_url), category = ? WHERE id = ?')
+          .run(article.description || '', article.image_url || null, article.category, existing.id);
+      }
+      return false;
+    }
+
     const stmt = db.prepare(`
       INSERT INTO articles (
         guid, title, link, source, source_id, category, description,
@@ -264,12 +277,12 @@ module.exports = {
     whereClause += " AND length(title) >= 18 AND length(description) >= 50";
     whereClause += " AND title NOT LIKE '%বিজ্ঞপ্তি%' AND title NOT LIKE '%Executive summary%' AND title NOT LIKE '%accessible)%'";
 
-    // Total count for pagination & statistics
-    const countStmt = db.prepare(`SELECT COUNT(*) as count FROM articles ${whereClause}`);
+    // Total count for pagination & statistics (Strict Unique Titles)
+    const countStmt = db.prepare(`SELECT COUNT(DISTINCT title) as count FROM articles ${whereClause}`);
     const total = countStmt.get(...params).count;
 
-    // Paginated articles
-    const query = `SELECT * FROM articles ${whereClause} ORDER BY timestamp DESC LIMIT ? OFFSET ?`;
+    // Paginated articles with Strict Title De-duplication (GROUP BY title)
+    const query = `SELECT * FROM articles ${whereClause} GROUP BY title ORDER BY timestamp DESC LIMIT ? OFFSET ?`;
     const paginatedParams = [...params, Number(limit), Number(offset)];
     const articles = db.prepare(query).all(...paginatedParams);
 
