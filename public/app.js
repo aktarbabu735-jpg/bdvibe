@@ -108,23 +108,258 @@ document.addEventListener('DOMContentLoaded', () => {
   startGlobalAdAutoRefresh();
 });
 
+// ==========================================================================
+// Complete Today's Calendar & Almanac Ticker (আজকের দিনপঞ্জিকা ও ট্রেন্ডিং স্ক্রলার)
+// ==========================================================================
+
+function getBanglaDateParts(date = new Date()) {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = date.getDate();
+  const isLeap = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+
+  let bDay, bMonth, bSeason, bYear;
+
+  if (month === 3 && day >= 14) { bMonth = 'বৈশাখ'; bDay = day - 13; bSeason = 'গ্রীষ্ম কাল'; bYear = year - 593; }
+  else if (month === 4 && day < 15) { bMonth = 'বৈশাখ'; bDay = day + 17; bSeason = 'গ্রীষ্ম কাল'; bYear = year - 593; }
+  else if (month === 4 && day >= 15) { bMonth = 'জ্যৈষ্ঠ'; bDay = day - 14; bSeason = 'গ্রীষ্ম কাল'; bYear = year - 593; }
+  else if (month === 5 && day < 15) { bMonth = 'জ্যৈষ্ঠ'; bDay = day + 17; bSeason = 'গ্রীষ্ম কাল'; bYear = year - 593; }
+  else if (month === 5 && day >= 15) { bMonth = 'আষাঢ়'; bDay = day - 14; bSeason = 'বর্ষা কাল'; bYear = year - 593; }
+  else if (month === 6 && day < 16) { bMonth = 'আষাঢ়'; bDay = day + 16; bSeason = 'বর্ষা কাল'; bYear = year - 593; }
+  else if (month === 6 && day >= 16) { bMonth = 'শ্রাবণ'; bDay = day - 15; bSeason = 'বর্ষা কাল'; bYear = year - 593; }
+  else if (month === 7 && day < 16) { bMonth = 'শ্রাবণ'; bDay = day + 16; bSeason = 'বর্ষা কাল'; bYear = year - 593; }
+  else if (month === 7 && day >= 16) { bMonth = 'ভাদ্র'; bDay = day - 15; bSeason = 'শরৎ কাল'; bYear = year - 593; }
+  else if (month === 8 && day < 16) { bMonth = 'ভাদ্র'; bDay = day + 16; bSeason = 'শরৎ কাল'; bYear = year - 593; }
+  else if (month === 8 && day >= 16) { bMonth = 'আশ্বিন'; bDay = day - 15; bSeason = 'শরৎ কাল'; bYear = year - 593; }
+  else if (month === 9 && day < 17) { bMonth = 'আশ্বিন'; bDay = day + 15; bSeason = 'শরৎ কাল'; bYear = year - 593; }
+  else if (month === 9 && day >= 17) { bMonth = 'কার্তিক'; bDay = day - 16; bSeason = 'হেমন্ত কাল'; bYear = year - 593; }
+  else if (month === 10 && day < 16) { bMonth = 'কার্তিক'; bDay = day + 14; bSeason = 'হেমন্ত কাল'; bYear = year - 593; }
+  else if (month === 10 && day >= 16) { bMonth = 'অগ্রহায়ণ'; bDay = day - 15; bSeason = 'হেমন্ত কাল'; bYear = year - 593; }
+  else if (month === 11 && day < 16) { bMonth = 'অগ্রহায়ণ'; bDay = day + 15; bSeason = 'হেমন্ত কাল'; bYear = year - 593; }
+  else if (month === 11 && day >= 16) { bMonth = 'পৌষ'; bDay = day - 15; bSeason = 'শীত কাল'; bYear = year - 593; }
+  else if (month === 0 && day < 15) { bMonth = 'পৌষ'; bDay = day + 16; bSeason = 'শীত কাল'; bYear = year - 594; }
+  else if (month === 0 && day >= 15) { bMonth = 'মাঘ'; bDay = day - 14; bSeason = 'শীত কাল'; bYear = year - 594; }
+  else if (month === 1 && day < 14) { bMonth = 'মাঘ'; bDay = day + 17; bSeason = 'শীত কাল'; bYear = year - 594; }
+  else if (month === 1 && day >= 14) { bMonth = 'ফাল্গুন'; bDay = day - 13; bSeason = 'বসন্ত কাল'; bYear = year - 594; }
+  else if (month === 2 && day < 15) { bMonth = 'ফাল্গুন'; bDay = day + (isLeap ? 16 : 15); bSeason = 'বসন্ত কাল'; bYear = year - 594; }
+  else if (month === 2 && day >= 15) { bMonth = 'চৈত্র'; bDay = day - 14; bSeason = 'বসন্ত কাল'; bYear = year - 594; }
+  else { bMonth = 'চৈত্র'; bDay = day + 17; bSeason = 'বসন্ত কাল'; bYear = year - 594; }
+
+  return { bDay, bMonth, bSeason, bYear };
+}
+
+function getLunarDetails(date = new Date()) {
+  const knownNewMoon = new Date('2024-01-11T11:57:00Z').getTime();
+  const synodicMonth = 29.53058867 * 86400 * 1000;
+  const diff = date.getTime() - knownNewMoon;
+  const phaseCycle = (diff % synodicMonth + synodicMonth) % synodicMonth;
+  const moonAgeDays = phaseCycle / (86400 * 1000);
+
+  const tithiIndex = Math.floor((moonAgeDays / 29.53058867) * 30);
+  const isShukla = tithiIndex < 15;
+  const tithiNum = (tithiIndex % 15) + 1;
+
+  const tithiNames = [
+    'প্রতিপদ', 'দ্বিতীয়া', 'তৃতীয়া', 'চতুর্থী', 'পঞ্চমী', 
+    'ষষ্ঠী', 'সপ্তমী', 'অষ্টমী', 'নবমী', 'দশমী', 
+    'একাদশী', 'দ্বাদশী', 'ত্রয়োদশী', 'চতুর্দশী', isShukla ? 'পূর্ণিমা' : 'অমাবস্যা'
+  ];
+
+  const tithiName = tithiNames[tithiNum - 1];
+  const paksha = isShukla ? 'শুক্লপক্ষ' : 'কৃষ্ণপক্ষ';
+
+  let daysToPurnima = Math.round(14.765 - moonAgeDays);
+  if (daysToPurnima < 0) daysToPurnima += 30;
+
+  let daysToAmavasya = Math.round(29.53 - moonAgeDays);
+  if (daysToAmavasya > 29.5) daysToAmavasya = 0;
+
+  return {
+    tithi: `${paksha} ${tithiName} তিথি`,
+    paksha,
+    daysToPurnima,
+    daysToAmavasya
+  };
+}
+
+function getHijriDate(date = new Date()) {
+  const hijriMonths = [
+    'মুহররম', 'সফর', 'রবিউল আউয়াল', 'রবিউস সানি', 
+    'জমাদিউল আউয়াল', 'জমাদিউস সানি', 'রজব', 'শাবান', 
+    'রমজান', 'শাওয়াল', 'জিলকদ', 'জিলহজ্জ'
+  ];
+  const jd = Math.floor(date.getTime() / 86400000) + 2440587.5;
+  const l = Math.floor(jd) - 1948440 + 10632;
+  const n = Math.floor((l - 1) / 10631);
+  const l2 = l - 10631 * n + 354;
+  const j = (Math.floor((10985 - l2) / 5316)) * (Math.floor((50 * l2) / 17719)) + (Math.floor(l2 / 5670)) * (Math.floor((43 * l2) / 15238));
+  const l3 = l2 - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50)) - (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
+  const m = Math.floor((24 * l3) / 709);
+  const d = l3 - Math.floor((709 * m) / 24);
+  const y = 30 * n + j - 30;
+
+  const hDay = Math.min(Math.max(d, 1), 30);
+  const hMonth = hijriMonths[(m - 1 + 12) % 12];
+  return `${toBengaliNumber(hDay)} ${hMonth} ${toBengaliNumber(y)} হিজরি`;
+}
+
+function renderTodayCalendarTrending() {
+  const container = document.getElementById('trendingChipsWrap');
+  if (!container) return;
+
+  const now = new Date();
+  const dayNames = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'];
+  const monthNamesEn = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+
+  const weekday = dayNames[now.getDay()];
+  const enDay = toBengaliNumber(now.getDate());
+  const enMonth = monthNamesEn[now.getMonth()];
+  const enYear = toBengaliNumber(now.getFullYear());
+  const enDateFull = `${weekday}, ${enDay} ${enMonth} ${enYear}`;
+
+  const { bDay, bMonth, bSeason, bYear } = getBanglaDateParts(now);
+  const bnDateFull = `${toBengaliNumber(bDay)} ${bMonth} ${toBengaliNumber(bYear)} বঙ্গাব্দ (${bSeason})`;
+
+  const hijriDateFull = getHijriDate(now);
+  const lunar = getLunarDetails(now);
+
+  const purnimaText = lunar.daysToPurnima === 0 
+    ? 'আজ পূর্ণিমা তিথি! 🌕' 
+    : `পরবর্তী পূর্ণিমা: আর ${toBengaliNumber(lunar.daysToPurnima)} দিন বাকি 🌕`;
+
+  const amavasyaText = lunar.daysToAmavasya === 0 
+    ? 'আজ অমাবস্যা তিথি! 🌑' 
+    : `পরবর্তী অমাবস্যা: আর ${toBengaliNumber(lunar.daysToAmavasya)} দিন বাকি 🌑`;
+
+  // Daily Horoscopes for 12 Zodiac signs
+  const rashifalList = [
+    { sign: 'মেষ', symbol: '♈', text: 'কর্মে শুভ যোগাযোগ ও নতুন কাজের সুযোগ' },
+    { sign: 'বৃষ', symbol: '♉', text: 'ব্যবসায়িক বিনিয়োগে লাভ ও আর্থিক সাফল্য' },
+    { sign: 'মিথুন', symbol: '♊', text: 'পারিবারিক সিদ্ধান্ত গ্রহণে শুভ দিন' },
+    { sign: 'কর্কট', symbol: '♋', text: 'সৃজনশীল কাজে সম্মান ও বিশেষ স্বীকৃতি' },
+    { sign: 'সিংহ', symbol: '♌', text: 'আত্মবিশ্বাস বৃদ্ধি ও নেতৃত্বে সফলতা' },
+    { sign: 'কন্যা', symbol: '♍', text: 'বকেয়া অর্থ প্রাপ্তি ও আর্থিক দিক শুভ' },
+    { sign: 'তুলা', symbol: '♎', text: 'সম্পর্কে সৌহার্দ্য ও ভুল বোঝাবুঝি দূর' },
+    { sign: 'বৃশ্চিক', symbol: '♏', text: 'ধৈর্য ও সচেতনতায় কাজে সফলতা অর্জন' },
+    { sign: 'ধনু', symbol: '♐', text: 'ভ্রমণ ও সামাজিক যোগাযোগে আনন্দদায়ক সময়' },
+    { sign: 'মকর', symbol: '♑', text: 'দীর্ঘ প্রচেষ্টার কাঙ্ক্ষিত ফল লাভ' },
+    { sign: 'কুম্ভ', symbol: '♒', text: 'নতুন পরিকল্পনা বাস্তবায়নের শুভ সময়' },
+    { sign: 'মীন', symbol: '♓', text: 'মানসিক শান্তি ও আধ্যাত্মিক প্রফুল্লতা' }
+  ];
+
+  // Hot Trending News Topics
+  const trendingTopics = [
+    'নির্বাচন সংস্কার',
+    'ডলার রেট ১২২.২০ ৳',
+    'স্বর্ণের ভরি ১,৪৪,৫০০ ৳',
+    'বিপিএল ও ক্রিকেট',
+    'এআই বিপ্লব',
+    'কৃষি অর্থনীতি',
+    'বিসিএস ও নিয়োগ'
+  ];
+
+  // Build Pill Items
+  const items = [
+    // 1. English Date
+    `<div class="cal-pill cal-pill-en" onclick="showToast('আজকের ইংরেজি তারিখ: ${enDateFull}')">
+      <span class="cal-pill-icon">📅</span>
+      <span class="cal-pill-label">ইংরেজি:</span>
+      <span class="cal-pill-val">${enDateFull}</span>
+    </div>`,
+
+    // 2. Bangla Calendar & Season
+    `<div class="cal-pill cal-pill-bn" onclick="showToast('আজকের বাংলা তারিখ: ${bnDateFull}')">
+      <span class="cal-pill-icon">🌾</span>
+      <span class="cal-pill-label">বাংলা:</span>
+      <span class="cal-pill-val">${bnDateFull}</span>
+    </div>`,
+
+    // 3. Hijri Date
+    `<div class="cal-pill cal-pill-hijri" onclick="showToast('আজকের ইসলামিক তারিখ: ${hijriDateFull}')">
+      <span class="cal-pill-icon">🌙</span>
+      <span class="cal-pill-label">হিজরি:</span>
+      <span class="cal-pill-val">${hijriDateFull}</span>
+    </div>`,
+
+    // 4. Tithi & Paksha
+    `<div class="cal-pill cal-pill-tithi" onclick="showToast('আজকের পঞ্জিকা: ${lunar.tithi}')">
+      <span class="cal-pill-icon">🕉️</span>
+      <span class="cal-pill-label">তিথি:</span>
+      <span class="cal-pill-val">${lunar.tithi}</span>
+    </div>`,
+
+    // 5. Purnima Countdown
+    `<div class="cal-pill cal-pill-moon" onclick="showToast('${purnimaText}')">
+      <span class="cal-pill-icon">🌕</span>
+      <span class="cal-pill-val">${purnimaText}</span>
+    </div>`,
+
+    // 6. Amavasya Countdown
+    `<div class="cal-pill cal-pill-moon" onclick="showToast('${amavasyaText}')">
+      <span class="cal-pill-icon">🌑</span>
+      <span class="cal-pill-val">${amavasyaText}</span>
+    </div>`,
+
+    // 7. Sunrise & Sunset
+    `<div class="cal-pill cal-pill-sun" onclick="showToast('আজকের সূর্যোদয় ভোর ৫:৫৬ মি. এবং সূর্যাস্ত সন্ধ্যা ৫:২৯ মি.')">
+      <span class="cal-pill-icon">☀️</span>
+      <span class="cal-pill-label">সূর্যোদয়:</span>
+      <span class="cal-pill-val">ভোর ৫:৫৬ মি.</span>
+      <span class="cal-pill-icon">🌅</span>
+      <span class="cal-pill-label">সূর্যাস্ত:</span>
+      <span class="cal-pill-val">সন্ধ্যা ৫:২৯ মি.</span>
+    </div>`,
+
+    // 8. Auspicious Time / Amritayog
+    `<div class="cal-pill cal-pill-amrita" onclick="showToast('অমৃতযোগ: সকাল ০৮:১৫ - ১০:৩০ মি. | রাহুকাল: দুপুর ১২:০০ - ০১:৩০ মি.')">
+      <span class="cal-pill-icon">✨</span>
+      <span class="cal-pill-label">অমৃতযোগ:</span>
+      <span class="cal-pill-val">সকাল ০৮:১৫-১০:৩০</span>
+      <span class="cal-pill-icon">⚠️</span>
+      <span class="cal-pill-label">রাহুকাল:</span>
+      <span class="cal-pill-val">১২:০০-০১:৩০</span>
+    </div>`,
+
+    // 9. Rashifals
+    ...rashifalList.map(r => `
+      <div class="cal-pill cal-pill-rashi" onclick="showToast('আজকের ${r.sign} রাশিফল: ${r.text}')">
+        <span class="cal-pill-icon">${r.symbol}</span>
+        <span class="cal-pill-label">${r.sign}:</span>
+        <span class="cal-pill-val">${r.text}</span>
+      </div>
+    `),
+
+    // 10. Trending Topics
+    ...trendingTopics.map(tag => `
+      <div class="cal-pill cal-pill-trend" onclick="searchTopic('${tag.replace(/^[#\s]+/, '').split(' ')[0]}')">
+        <span class="cal-pill-icon">🔥</span>
+        <span class="cal-pill-val"># ${tag}</span>
+      </div>
+    `)
+  ];
+
+  const htmlContent = items.join('');
+  // Duplicate sequence for seamless 0% -> -50% infinite marquee loop with zero gaps
+  container.innerHTML = htmlContent + htmlContent;
+}
+
 // Live Bengali Date & Second-by-Second Clock
 function initLiveDate() {
   function updateClock() {
     const now = new Date();
-    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const bnDate = now.toLocaleDateString('bn-BD', dateOptions);
     const timeStr = now.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
     
     const timeElem = document.getElementById('liveTimeText');
     if (timeElem) timeElem.textContent = timeStr;
-
-    const topBarDate = document.getElementById('topBarDate');
-    if (topBarDate) topBarDate.textContent = bnDate;
   }
 
   updateClock();
   setInterval(updateClock, 1000);
+
+  // Render comprehensive Calendar, Almanac, Horoscopes & Trending Marquee
+  renderTodayCalendarTrending();
+  // Refresh calendar at midnight or hourly
+  setInterval(renderTodayCalendarTrending, 3600000);
 }
 
 // Real-Time Auto Polling Engine (Every 20 Seconds)
