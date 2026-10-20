@@ -423,6 +423,34 @@
           <div class="reader-text-content" id="modalContent">
             <!-- Text content rendered here -->
           </div>
+
+          <!-- Mobile-Only In-Modal Bottom Banner Test Ad (শুধু মোবাইল ইউজারদের জন্য টেস্ট ব্যানার অ্যাড) -->
+          <div class="modal-mobile-banner-ad" id="modalMobileBannerAd" onclick="handleMobileBannerAdClick(event)">
+            <div class="mobile-ad-header">
+              <div class="mobile-ad-sponsor-info">
+                <span class="mobile-ad-badge">বিজ্ঞাপন</span>
+                <span class="mobile-ad-sponsor" id="mobileAdSponsor">বিকাশ লিমিটেড</span>
+              </div>
+              <span class="mobile-ad-timer" title="প্রতি ৩০ সেকেন্ডে স্বয়ংক্রিয় রিফ্রেশ">⏱ ৩০ সে.</span>
+            </div>
+            
+            <div class="mobile-ad-body">
+              <div class="mobile-ad-image-wrap">
+                <img id="mobileAdImage" src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=600&q=80" alt="টেস্ট বিজ্ঞাপন">
+              </div>
+              <div class="mobile-ad-text-wrap">
+                <h4 class="mobile-ad-title" id="mobileAdTitle">বিকাশ অ্যাপে সেন্ড মানি সম্পূর্ণ ফ্রি! আজই দারুণ ক্যাশব্যাক অফার উপভোগ করুন</h4>
+                <p class="mobile-ad-desc" id="mobileAdDesc">দেশের যে কোনো প্রান্তে মুহূর্তেই টাকা পাঠান নিশ্চিন্তে ও নিরাপদে।</p>
+              </div>
+            </div>
+
+            <div class="mobile-ad-footer">
+              <span class="mobile-ad-sponsored-pill">📢 টেস্ট স্পন্সরড ব্যানার</span>
+              <a class="mobile-ad-cta-btn" id="mobileAdCtaBtn" href="https://www.bkash.com" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                অফার দেখুন ↗
+              </a>
+            </div>
+          </div>
         </div>
 
         <div class="reader-modal-footer">

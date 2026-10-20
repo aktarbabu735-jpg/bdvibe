@@ -1783,12 +1783,59 @@ function handleVideoBottomAdClick(e) {
   }
 }
 
+// Mobile-Only In-Modal Bottom Banner Test Ad (শুধু মোবাইল ইউজারদের জন্য)
+let currentMobileAdIdx = 0;
+
+function refreshMobileBannerAd(smooth = false) {
+  if (typeof TEST_ADS_POOL === 'undefined' || TEST_ADS_POOL.length === 0) return;
+  const mobileAd = document.getElementById('modalMobileBannerAd');
+  if (!mobileAd) return;
+
+  if (smooth) mobileAd.classList.add('ad-refreshing');
+
+  setTimeout(() => {
+    currentMobileAdIdx = (currentMobileAdIdx + 1) % TEST_ADS_POOL.length;
+    const ad = TEST_ADS_POOL[currentMobileAdIdx];
+
+    const sponsorEl = document.getElementById('mobileAdSponsor');
+    const imgEl = document.getElementById('mobileAdImage');
+    const titleEl = document.getElementById('mobileAdTitle');
+    const descEl = document.getElementById('mobileAdDesc');
+    const ctaBtn = document.getElementById('mobileAdCtaBtn');
+
+    if (sponsorEl) sponsorEl.textContent = ad.sponsor;
+    if (imgEl && ad.image) imgEl.src = ad.image;
+    if (titleEl) titleEl.textContent = ad.title;
+    if (descEl) descEl.textContent = ad.description;
+    if (ctaBtn) {
+      ctaBtn.textContent = ad.cta || 'অফার দেখুন ↗';
+      ctaBtn.href = ad.link || '#';
+    }
+    window._currentMobileAdLink = ad.link || '#';
+
+    if (smooth) {
+      mobileAd.classList.remove('ad-refreshing');
+    }
+  }, smooth ? 200 : 0);
+}
+
+function handleMobileBannerAdClick(e) {
+  if (e && e.target.closest('#mobileAdCtaBtn')) return;
+  const link = window._currentMobileAdLink;
+  if (link && link !== '#') {
+    window.open(link, '_blank', 'noopener,noreferrer');
+  } else {
+    showToast('মোবাইল টেস্ট ব্যানার বিজ্ঞাপন লিংক সক্রিয় হয়েছে');
+  }
+}
+
 function startGlobalAdAutoRefresh() {
   if (adAutoRefreshTimer) clearInterval(adAutoRefreshTimer);
   adAutoRefreshTimer = setInterval(() => {
     const modal = document.getElementById('articleReaderModal');
     if (modal && modal.classList.contains('active')) {
       refreshModalSideAds(true);
+      refreshMobileBannerAd(true);
       const videoWrapper = document.getElementById('modalVideoWrapper');
       if (videoWrapper && videoWrapper.style.display !== 'none') {
         refreshVideoBottomAd(true);
@@ -1811,6 +1858,7 @@ function handleSideAdClick(sideIndex) {
 function openReaderModal(article, isLoadingFull = false) {
   state.activeArticle = article;
   refreshModalSideAds(false);
+  refreshMobileBannerAd(false);
   startGlobalAdAutoRefresh();
 
   // Dynamic SEO Meta & Title Updates for Article
