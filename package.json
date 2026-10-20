@@ -1,0 +1,29 @@
+{
+  "name": "bdvibe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aktarbabu735-jpg/bdvibe.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/aktarbabu735-jpg/bdvibe/issues"
+  },
+  "homepage": "https://github.com/aktarbabu735-jpg/bdvibe#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "node-cron": "^4.6.0",
+    "rss-parser": "^3.13.0"
+  }
+}

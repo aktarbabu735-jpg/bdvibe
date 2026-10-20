@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BDVibe — নেক্সট-জেন ডিজিটাল কনটেন্ট ও মিডিয়া হাব</title>
+  <meta name="description" content="বাংলাদেশের সকল শীর্ষস্থানীয় সোর্স থেকে রাজনীতি, অর্থনীতি, প্রযুক্তি, লাইফস্টাইল, শিক্ষা, কৃষি, ক্যারিয়ার ও সমসাময়িক সকল ডিজিটাল কনটেন্টের আধুনিক কেন্দ্রীয় প্ল্যাটফর্ম।">
+  <meta name="keywords" content="BDVibe, বিডি ভাইব, ডিজিটাল পোর্টাল, প্রযুক্তি, অর্থনীতি, লাইফস্টাইল, শিক্ষা, কৃষি, ক্যারিয়ার, বাংলাদেশ">
+
+  <!-- Google Fonts: Anek Bangla, Plus Jakarta Sans, Outfit, Hind Siliguri -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme">
+
+  <!-- =========================================================================
+       0. AMBIENT AURORA GLOW BACKGROUND
+       ========================================================================= -->
+  <div class="ambient-glow-wrap" aria-hidden="true">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+  </div>
+
+  <!-- =========================================================================
+       1. GLOBAL HEADER (Aurora Brand, Spotlight Search, Live Clock & Status)
+       ========================================================================= -->
+  <header class="msn-header" id="msnHeader">
+    <div class="msn-header-container">
+      
+      <!-- Left: Category Menu + Brand Emblem -->
+      <div class="msn-header-left">
+        <button class="msn-waffle-btn" id="waffleMenuBtn" aria-label="অ্যাপস ও ক্যাটাগরি মেনু" title="ক্যাটাগরি ড্রয়ার">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="4" cy="4" r="2.2"></circle>
+            <circle cx="12" cy="4" r="2.2"></circle>
+            <circle cx="20" cy="4" r="2.2"></circle>
+            <circle cx="4" cy="12" r="2.2"></circle>
+            <circle cx="12" cy="12" r="2.2"></circle>
+            <circle cx="20" cy="12" r="2.2"></circle>
+            <circle cx="4" cy="20" r="2.2"></circle>
+            <circle cx="12" cy="20" r="2.2"></circle>
+            <circle cx="20" cy="20" r="2.2"></circle>
+          </svg>
+        </button>
+
+        <a href="#" class="msn-logo-lockup" id="brandLogo" onclick="resetToHome(); return false;" title="BDVibe">
+          <div class="msn-butterfly">
+            <span class="bf-sq bf-blue"></span>
+            <span class="bf-sq bf-green"></span>
+            <span class="bf-sq bf-yellow"></span>
+            <span class="bf-sq bf-red"></span>
+          </div>
+          <div class="msn-logo-text-wrap">
+            <span class="msn-logo-main">BD<span class="logo-accent">Vibe</span></span>
+            <span class="msn-logo-tag">বাংলাদেশ</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Center: Apple Spotlight / Linear Style Search Bar -->
+      <div class="msn-search-wrap">
+        <div class="msn-search-bar" id="msnSearchBar">
+          <svg class="bing-lens" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="অনুসন্ধান করুন... (যেমন: রাজনীতি, অর্থনীতি, প্রযুক্তি, কৃষি)" 
+            aria-label="অনুসন্ধান"
+            autocomplete="off"
+          >
+          <button id="searchClearBtn" class="search-clear-btn" title="মুছে ফেলুন" style="display: none;">✕</button>
+          <button id="searchSubmitBtn" class="search-submit-btn" title="অনুসন্ধান করুন">
+            <span>খুঁজুন</span>
+          </button>
+        </div>
+        <!-- Live Instant Suggestions Dropdown -->
+        <div class="search-suggestions-dropdown" id="searchSuggestionsDropdown" style="display: none;">
+          <div class="suggestions-header">
+            <span>🔍 তাত্ক্ষণিক ফলাফল</span>
+            <span class="suggestions-close" id="closeSuggestionsBtn">✕</span>
+          </div>
+          <div class="suggestions-list" id="suggestionsList">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Live Clock, Weather, Refresh, Bookmarks, Theme & Profile -->
+      <div class="msn-header-right">
+        
+        <!-- Live Clock Pill -->
+        <div class="msn-clock-pill" id="liveClockPill" title="বর্তমান সময়">
+          <span class="live-dot"></span>
+          <span id="liveTimeText">১২:০০:০০ PM</span>
+        </div>
+
+        <!-- Weather Mini Pill -->
+        <div class="msn-weather-pill" id="headerWeatherPill" title="ঢাকার আবহাওয়া">
+          <span class="wx-icon">⛅</span>
+          <span class="wx-temp" id="headerWeatherTemp">ঢাকা ২৯°</span>
+        </div>
+
+        <!-- Refresh Button -->
+        <button class="msn-icon-btn" id="manualRefreshBtn" title="নতুন কনটেন্ট রিফ্রেশ করুন">
+          <svg class="spin-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+        </button>
+
+        <!-- Saved Bookmarks -->
+        <button class="msn-icon-btn bookmark-btn" id="savedNewsModalBtn" title="সংরক্ষিত কনটেন্ট">
+          <span class="icon">🔖</span>
+          <span class="badge" id="savedCounter">০</span>
+        </button>
+
+        <!-- Theme Toggle (Light / Dark) -->
+        <button class="msn-icon-btn" id="themeToggleBtn" title="থিম পরিবর্তন" aria-label="ডার্ক বা লাইট মোড">
+          <span id="themeIcon">🌙</span>
+        </button>
+
+        <!-- User Profile Avatar -->
+        <div class="msn-user-avatar" title="আমার প্রোফাইল">
+          <span>বিডি</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       2. SERVICES STRIPE (Horizontal Category Navigation Ribbon)
+       ========================================================================= -->
+  <nav class="msn-nav-stripe" aria-label="প্রধান ক্যাটাগরি মেনু">
+    <div class="msn-nav-container">
+      <a href="#" class="nav-tab active" data-cat="all" onclick="filterByCategory('all'); return false;">🏠 হোম</a>
+      <a href="#" class="nav-tab nav-tab-live" data-cat="live" onclick="filterByCategory('live'); return false;"><span class="live-pulse-dot"></span> লাইভ ভিডিও</a>
+      <a href="#" class="nav-tab" data-cat="politics" onclick="filterByCategory('politics'); return false;">🏛️ রাজনীতি</a>
+      <a href="#" class="nav-tab" data-cat="economy" onclick="filterByCategory('economy'); return false;">📈 অর্থনীতি ও বাণিজ্য</a>
+      <a href="#" class="nav-tab" data-cat="tech" onclick="filterByCategory('tech'); return false;">⚡ প্রযুক্তি</a>
+      <a href="#" class="nav-tab" data-cat="agriculture" onclick="filterByCategory('agriculture'); return false;">🌾 কৃষি ও প্রকৃতি</a>
+      <a href="#" class="nav-tab" data-cat="education" onclick="filterByCategory('education'); return false;">🎓 শিক্ষা ও ক্যারিয়ার</a>
+      <a href="#" class="nav-tab" data-cat="career" onclick="filterByCategory('career'); return false;">💼 চাকরি ও কর্মসংস্থান</a>
+      <a href="#" class="nav-tab" data-cat="lifestyle" onclick="filterByCategory('lifestyle'); return false;">✨ লাইফস্টাইল</a>
+      <a href="#" class="nav-tab" data-cat="sports" onclick="filterByCategory('sports'); return false;">⚽ খেলাধুলা</a>
+      <a href="#" class="nav-tab" data-cat="entertainment" onclick="filterByCategory('entertainment'); return false;">🎬 বিনোদন</a>
+      <a href="#" class="nav-tab" data-cat="health" onclick="filterByCategory('health'); return false;">🩺 স্বাস্থ্য</a>
+      <a href="#" class="nav-tab" data-cat="probash" onclick="filterByCategory('probash'); return false;">✈️ প্রবাস</a>
+      <a href="#" class="nav-tab nav-tab-watch" onclick="filterByCategory('live'); return false;">🔴 লাইভ ও ভিডিও</a>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       3. TRENDING STRIPE (Trending Topics + Live Date)
+       ========================================================================= -->
+  <div class="msn-trending-stripe">
+    <div class="msn-trending-container">
+      <div class="trending-badge">
+        <span class="flame">🔥</span>
+        <span>আজকের ট্রেন্ডিং:</span>
+      </div>
+      <div class="trending-tags-track" id="trendingChipsWrap">
+        <button class="tag-pill" onclick="searchTopic('নির্বাচন')"># নির্বাচন সংস্কার</button>
+        <button class="tag-pill" onclick="searchTopic('ডলার')"># ডলার রেট ১২২.২০ ৳</button>
+        <button class="tag-pill" onclick="searchTopic('স্বর্ণ')"># স্বর্ণের ভরি ১,৪৪,৫০০ ৳</button>
+        <button class="tag-pill" onclick="searchTopic('বিপিএল')"># বিপিএল ও ক্রিকেট</button>
+        <button class="tag-pill" onclick="searchTopic('কৃত্রিম বুদ্ধিমত্তা')"># কৃত্রিম বুদ্ধিমত্তা</button>
+        <button class="tag-pill" onclick="searchTopic('কৃষি')"># কৃষি বিপ্লব</button>
+        <button class="tag-pill" onclick="searchTopic('চাকরি')"># বিসিএস ও নিয়োগ</button>
+      </div>
+      <div class="live-date-badge hide-mobile">
+        <span id="topBarDate">মঙ্গলবার, ২১ অক্টোবর ২০২৬</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       4. TOP BILLBOARD SPONSORED BANNER (Clean MSN Ad Standard)
+       ========================================================================= -->
+  <div class="msn-billboard" id="billboardAdContainer">
+    <div class="billboard-box">
+      <span class="ad-pill">📢 টেস্ট অ্যাড</span>
+      <a href="#" id="billboardAdLink" class="ad-link" target="_blank" rel="noopener sponsored">
+        <span class="ad-badge-icon">AD</span>
+        <div class="ad-text-group">
+          <strong id="billboardSponsor">ডিজিটাল বাংলাদেশ ২০২৬ সামিট</strong>
+          <span id="billboardTitle">দেশের সর্ববৃহৎ উদ্ভাবনী প্রযুক্তি মেলা — আজই ফ্রি পাস বুক করুন</span>
+        </div>
+        <span class="ad-cta">বিস্তারিত দেখুন →</span>
+      </a>
+      <button class="ad-close" id="closeBillboardBtn" title="বিজ্ঞাপন লুকান">×</button>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       5. MAIN VIEWPORT (Unified MSN 4-Column Continuous Stream)
+       ========================================================================= -->
+  <main class="msn-main">
+    <div class="msn-container">
+
+      <!-- Active Filter Indicator (If Search or Category filter is applied) -->
+      <div class="filter-indicator-bar" id="filterStatusBanner" style="display: none;">
+        <div class="filter-indicator-title">
+          <span id="filterStatusTitle">ফিল্টার ফলাফল</span>
+          <span class="badge" id="filterCount"></span>
+        </div>
+        <button class="filter-clear-btn" id="resetFilterBtn">সকল কনটেন্টে ফিরে যান ✕</button>
+      </div>
+
+      <!-- The Official MSN 4-Column Continuous Dense Feed (ZERO GAPS + UNIFIED 320px CARDS) -->
+      <div class="msn-dense-stream-grid" id="mainDenseStreamGrid">
+        <!-- Dynamically populated by JS: 320px uniform cards + widgets + test ads -->
+      </div>
+
+      <div class="load-more-wrap" style="margin: 32px 0 60px; text-align: center;">
+        <button class="msn-load-more-btn" id="streamLoadMoreBtn">আরও সংবাদ ও ভিডিও লোড হচ্ছে... (স্ক্রোল করুন) ↓</button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       6. MSN FOOTER (Minimalist Microsoft Standard)
+       ========================================================================= -->
+  <footer class="msn-footer">
+    <div class="msn-footer-container">
+      <div class="footer-top-row">
+        <div class="footer-brand">
+          <div class="msn-butterfly mini">
+            <span class="bf-sq bf-blue"></span>
+            <span class="bf-sq bf-green"></span>
+            <span class="bf-sq bf-yellow"></span>
+            <span class="bf-sq bf-red"></span>
+          </div>
+          <span class="footer-brand-name">BDVibe</span>
+          <span class="footer-tagline">— আধুনিক ডিজিটাল কনটেন্ট ও ইনফো পোর্টাল</span>
+        </div>
+        <div class="footer-links">
+          <a href="#" onclick="filterByCategory('all'); return false;">হোম</a>
+          <a href="#" onclick="filterByCategory('politics'); return false;">রাজনীতি</a>
+          <a href="#" onclick="filterByCategory('economy'); return false;">অর্থনীতি</a>
+          <a href="#" onclick="filterByCategory('tech'); return false;">প্রযুক্তি</a>
+          <a href="#" onclick="filterByCategory('lifestyle'); return false;">লাইফস্টাইল</a>
+          <a href="#" onclick="filterByCategory('agriculture'); return false;">কৃষি</a>
+          <a href="#" onclick="filterByCategory('sports'); return false;">খেলাধুলা</a>
+          <a href="#" onclick="filterByCategory('live'); return false;">লাইভ ভিডিও</a>
+        </div>
+      </div>
+      <div class="footer-bottom-row">
+        <p class="copyright">© ২০২৬ BDVibe (বিডি ভাইব) • সকল অধিকার সংরক্ষিত। কনটেন্টসমূহ সংশ্লিষ্ট বাংলাদেশী সংবাদমাধ্যম ও অনলাইন পোর্টাল থেকে স্বয়ংক্রিয়ভাবে সংগৃহীত।</p>
+        <div class="msn-footer-badges">
+          <span>BDVibe স্মার্ট ডিজিটাল পোর্টাল</span>
+          <span>•</span>
+          <span>সর্বশেষ আপডেট: <span id="footerUpdateTime">রিয়েল-টাইম লাইভ</span></span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       7. WAFFLE MEGA MENU DRAWER (Microsoft 365 Apps Drawer Style)
+       ========================================================================= -->
+  <div class="waffle-drawer-overlay" id="waffleDrawerOverlay">
+    <div class="waffle-drawer-content">
+      <div class="waffle-drawer-header">
+        <div class="drawer-title">
+          <div class="msn-butterfly mini">
+            <span class="bf-sq bf-blue"></span>
+            <span class="bf-sq bf-green"></span>
+            <span class="bf-sq bf-yellow"></span>
+            <span class="bf-sq bf-red"></span>
+          </div>
+          <h4>BDVibe সার্ভিসেস ও ক্যাটাগরি</h4>
+        </div>
+        <button class="drawer-close-btn" id="closeWaffleBtn">×</button>
+      </div>
+
+      <div class="waffle-apps-grid">
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('all'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🌐</span>
+          <span class="app-label">সকল বিষয়</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('politics'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🏛️</span>
+          <span class="app-label">রাজনীতি</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('economy'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">📈</span>
+          <span class="app-label">অর্থনীতি ও বাণিজ্য</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('tech'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">💻</span>
+          <span class="app-label">প্রযুক্তি ও গ্যাজেট</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('lifestyle'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">✨</span>
+          <span class="app-label">লাইফস্টাইল</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('education'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🎓</span>
+          <span class="app-label">শিক্ষা</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('agriculture'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🌾</span>
+          <span class="app-label">কৃষি সংবাদ</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('career'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">💼</span>
+          <span class="app-label">ক্যারিয়ার ও চাকরি</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('sports'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">⚽</span>
+          <span class="app-label">খেলাধুলা</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('entertainment'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🎬</span>
+          <span class="app-label">বিনোদন</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('health'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🩺</span>
+          <span class="app-label">স্বাস্থ্য ও চিকিৎসা</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('probash'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">✈️</span>
+          <span class="app-label">প্রবাস</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('live'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🎥</span>
+          <span class="app-label">ওয়াচ / ভিডিও</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       8. ARTICLE FULL READER MODAL (Clean Apple News / Medium Reader) + SIDE ADS
+       ========================================================================= -->
+  <div class="reader-modal-overlay" id="articleReaderModal">
+    <div class="reader-modal-layout-wrapper">
+      
+      <!-- Left Skyscraper Test Ad Slot -->
+      <aside class="modal-side-ad modal-side-ad-left" id="modalSideAdLeft" onclick="handleSideAdClick(0)">
+        <div class="side-ad-header">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="side-ad-badge">📢 টেস্ট অ্যাড</span>
+            <span class="side-ad-refresh-badge" title="বিজ্ঞাপন পলিসি অনুযায়ী প্রতি ৩০ সেকেন্ডে রিফ্রেশ">⏱ ৩০ সে.</span>
+          </div>
+          <span class="side-ad-info-btn" title="বিজ্ঞাপন তথ্য">•••</span>
+        </div>
+        <div class="side-ad-media">
+          <img id="sideAdLeftImg" src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=400&q=80" alt="টেস্ট বিজ্ঞাপন">
+        </div>
+        <div class="side-ad-body">
+          <div class="side-ad-sponsor-row">
+            <span class="side-ad-avatar">ব</span>
+            <span class="side-ad-sponsor" id="sideAdLeftSponsor">বিকাশ লিমিটেড</span>
+          </div>
+          <h4 class="side-ad-title" id="sideAdLeftTitle">বিকাশ অ্যাপে সেন্ড মানি সম্পূর্ণ ফ্রি! আজই ক্যাশব্যাক অফার নিন</h4>
+          <p class="side-ad-desc" id="sideAdLeftDesc">মার্চেন্ট পেমেন্টে ইনস্ট্যান্ট ক্যাশব্যাক ও আকর্ষণীয় রিচার্জ অফার।</p>
+          <button class="side-ad-action-btn" id="sideAdLeftCta">অফার দেখুন ↗</button>
+          <span class="side-ad-disclaimer">স্পনসরড বিজ্ঞাপন প্লেসমেন্ট</span>
+        </div>
+      </aside>
+
+      <!-- Center Main Reader Box -->
+      <div class="reader-modal-box">
+        <!-- Reading Progress Indicator Bar -->
+        <div id="readerProgressBar" style="height: 3px; background: var(--gradient-brand); width: 0%; transition: width 0.1s linear;"></div>
+
+        <div class="reader-modal-header">
+          <div class="reader-meta-group">
+            <span class="source-tag" id="modalSource">প্রথম আলো</span>
+            <span class="dot">•</span>
+            <span class="category-tag" id="modalCategory">প্রযুক্তি</span>
+            <span class="dot">•</span>
+            <span class="time-tag" id="modalTime">১০ মিনিট আগে</span>
+          </div>
+          <div class="reader-actions-right">
+            <button class="icon-btn" id="modalSpeakBtn" title="সংবাদ পাঠ শুনুন (Audio)">🔊</button>
+            <button class="icon-btn" id="modalFontDecBtn" title="ছোট ফন্ট">A-</button>
+            <button class="icon-btn" id="modalFontIncBtn" title="বড় ফন্ট">A+</button>
+            <button class="icon-btn" id="modalBookmarkBtn" title="সংরক্ষণ করুন">🔖</button>
+            <button class="icon-btn" id="modalShareBtn" title="শেয়ার করুন">🔗</button>
+            <button class="icon-btn close-btn" id="modalCloseBtn" title="বন্ধ করুন">×</button>
+          </div>
+        </div>
+
+        <div class="reader-modal-body">
+          <h1 class="reader-headline" id="modalTitle">শিরোনাম লোড হচ্ছে...</h1>
+          
+          <!-- Standard News Image Viewport -->
+          <div class="reader-image-viewport" id="modalImageViewport">
+            <img src="" alt="" id="modalImage">
+          </div>
+
+          <!-- TV Channel & YouTube Video Player Viewport -->
+          <div class="modal-video-wrapper" id="modalVideoWrapper" style="display: none;">
+            <iframe id="modalVideoIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            
+            <!-- Video Bottom Marquee / Banner Ad Overlay -->
+            <div class="video-bottom-ad-bar" id="videoBottomAdBar" onclick="handleVideoBottomAdClick(event)">
+              <div class="video-ad-left">
+                <span class="video-ad-badge">বিজ্ঞাপন</span>
+                <span class="video-ad-sponsor" id="videoAdSponsor">দারাজ বাংলাদেশ</span>
+              </div>
+              <div class="video-ad-marquee-wrap">
+                <div class="video-ad-marquee-track" id="videoAdMarqueeTrack">
+                  <span class="video-ad-ticker-text" id="videoAdTickerText">দারাজ গ্র্যান্ড সুপার সেল — স্মার্টফোন ও ইলেকট্রনিক্সে ৬০% পর্যন্ত মেগা ছাড়! ফ্রি ডেলিভারি অফার চলছে।</span>
+                </div>
+              </div>
+              <div class="video-ad-right">
+                <span class="video-ad-timer-pill" title="প্রতি ৩০ সেকেন্ডে স্বয়ংক্রিয় রিফ্রেশ">⏱ ৩০ সে.</span>
+                <a class="video-ad-cta-btn" id="videoAdCtaBtn" href="https://www.daraz.com.bd" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">অফার দেখুন ↗</a>
+                <button class="video-ad-close-btn" id="videoAdCloseBtn" title="বিজ্ঞাপন লুকান" onclick="dismissVideoAd(event)">✕</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="reader-text-content" id="modalContent">
+            <!-- Text content rendered here -->
+          </div>
+        </div>
+
+        <div class="reader-modal-footer">
+          <div class="modal-footer-reactions">
+            <button class="rx-btn rx-like-btn" id="modalLikeBtn" title="পছন্দ" onclick="reactToArticle(event, this, 'like')">
+              👍 <span class="rx-count" id="modalLikeCount">১২৮</span>
+            </button>
+            <button class="rx-btn rx-dislike-btn" id="modalDislikeBtn" title="অপছন্দ" onclick="reactToArticle(event, this, 'dislike')">
+              👎
+            </button>
+          </div>
+          <div class="modal-footer-right">
+            <span class="original-notice">মূল প্রতিবেদন পড়ুন:</span>
+            <a href="#" class="read-original-btn" id="modalOriginalLink" target="_blank" rel="noopener noreferrer">
+              মূল উৎস খুলুন ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Skyscraper Test Ad Slot -->
+      <aside class="modal-side-ad modal-side-ad-right" id="modalSideAdRight" onclick="handleSideAdClick(1)">
+        <div class="side-ad-header">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="side-ad-badge">📢 টেস্ট অ্যাড</span>
+            <span class="side-ad-refresh-badge" title="বিজ্ঞাপন পলিসি অনুযায়ী প্রতি ৩০ সেকেন্ডে রিফ্রেশ">⏱ ৩০ সে.</span>
+          </div>
+          <span class="side-ad-info-btn" title="বিজ্ঞাপন তথ্য">•••</span>
+        </div>
+        <div class="side-ad-media">
+          <img id="sideAdRightImg" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&q=80" alt="টেস্ট বিজ্ঞাপন">
+        </div>
+        <div class="side-ad-body">
+          <div class="side-ad-sponsor-row">
+            <span class="side-ad-avatar" style="background: #ea580c;">দ</span>
+            <span class="side-ad-sponsor" id="sideAdRightSponsor">দারাজ বাংলাদেশ</span>
+          </div>
+          <h4 class="side-ad-title" id="sideAdRightTitle">দারাজ গ্র্যান্ড সুপার সেল — স্মার্টফোন ও গ্যাজেটে ৬০% মেগা ছাড়!</h4>
+          <p class="side-ad-desc" id="sideAdRightDesc">ফ্রি হোম ডেলিভারি ও ভাউচার ডিসকাউন্টে আজই আপনার পছন্দের পণ্য অর্ডার করুন।</p>
+          <button class="side-ad-action-btn" id="sideAdRightCta">শপিং করুন ↗</button>
+          <span class="side-ad-disclaimer">স্পনসরড বিজ্ঞাপন প্লেসমেন্ট</span>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       9. SAVED BOOKMARKS MODAL
+       ========================================================================= -->
+  <div class="reader-modal-overlay" id="savedBookmarksModal">
+    <div class="reader-modal-box saved-list-modal">
+      <div class="reader-modal-header">
+        <div class="reader-meta-group">
+          <span class="source-tag">🔖 সংরক্ষিত কনটেন্ট তালিকা</span>
+        </div>
+        <button class="icon-btn close-btn" id="closeBookmarksModalBtn">×</button>
+      </div>
+      <div class="saved-bookmarks-list" id="savedArticlesContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       10. REAL-TIME TOAST NOTIFICATIONS
+       ========================================================================= -->
+  <div class="portal-toast" id="portalToast">
+    <span class="toast-dot"></span>
+    <span id="toastMessage">নোটিফিকেশন</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

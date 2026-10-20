@@ -1,1759 +1,502 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BD Vibe — The Pulse of Modern Culture & Sound</title>
-  <meta name="description" content="Discover BD Vibe: The premier hub for modern youth culture, urban music, contemporary art, and creative expressions in Bangladesh and beyond.">
-  <meta name="keywords" content="BD Vibe, Bangladesh music, urban culture, creative collective, Dhaka underground, modern beats">
-  <meta name="theme-color" content="#090d16">
+  <title>BDVibe — নেক্সট-জেন ডিজিটাল কনটেন্ট ও মিডিয়া হাব</title>
+  <meta name="description" content="বাংলাদেশের সকল শীর্ষস্থানীয় সোর্স থেকে রাজনীতি, অর্থনীতি, প্রযুক্তি, লাইফস্টাইল, শিক্ষা, কৃষি, ক্যারিয়ার ও সমসাময়িক সকল ডিজিটাল কনটেন্টের আধুনিক কেন্দ্রীয় প্ল্যাটফর্ম।">
+  <meta name="keywords" content="BDVibe, বিডি ভাইব, ডিজিটাল পোর্টাল, প্রযুক্তি, অর্থনীতি, লাইফস্টাইল, শিক্ষা, কৃষি, ক্যারিয়ার, বাংলাদেশ">
 
-  <!-- Open Graph / Social Sharing -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="BD Vibe — The Pulse of Modern Culture & Sound">
-  <meta property="og:description" content="Immerse yourself in authentic rhythms, contemporary creative art, and dynamic youth culture.">
-  <meta property="og:site_name" content="BD Vibe">
-
-  <!-- Modern Google Fonts -->
+  <!-- Google Fonts: Anek Bangla, Plus Jakarta Sans, Outfit, Hind Siliguri -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@300;400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    /* ==========================================================================
-       CSS Variables & Design System
-       ========================================================================== */
-    :root {
-      --bg-dark: #080c14;
-      --bg-surface: #0f172a;
-      --bg-card: rgba(18, 26, 43, 0.65);
-      --bg-card-hover: rgba(28, 40, 65, 0.85);
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-glow: rgba(99, 102, 241, 0.35);
-
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
-
-      --primary: #6366f1;
-      --primary-glow: rgba(99, 102, 241, 0.5);
-      --accent-cyan: #06b6d4;
-      --accent-emerald: #10b981;
-      --accent-rose: #f43f5e;
-      --accent-amber: #f59e0b;
-
-      --gradient-brand: linear-gradient(135deg, #06b6d4 0%, #6366f1 50%, #ec4899 100%);
-      --gradient-glow: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
-
-      --font-body: 'Outfit', sans-serif;
-      --font-display: 'Space Grotesk', sans-serif;
-
-      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --radius-full: 9999px;
-    }
-
-    /* Light Mode Option */
-    body.light-theme {
-      --bg-dark: #f8fafc;
-      --bg-surface: #ffffff;
-      --bg-card: rgba(255, 255, 255, 0.85);
-      --bg-card-hover: rgba(255, 255, 255, 0.98);
-      --border-subtle: rgba(0, 0, 0, 0.08);
-      --border-glow: rgba(99, 102, 241, 0.25);
-      --text-main: #0f172a;
-      --text-muted: #475569;
-      --text-dim: #94a3b8;
-      --gradient-glow: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
-    }
-
-    /* ==========================================================================
-       Reset & Base Styles
-       ========================================================================== */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      color-scheme: dark;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: var(--font-body);
-      line-height: 1.6;
-      overflow-x: hidden;
-      min-height: 100vh;
-      position: relative;
-      transition: background-color 0.4s ease, color 0.4s ease;
-    }
-
-    /* Ambient Background Glow */
-    .ambient-glow {
-      position: fixed;
-      top: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 900px;
-      height: 900px;
-      background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(6, 182, 212, 0.1) 40%, transparent 70%);
-      filter: blur(80px);
-      pointer-events: none;
-      z-index: 0;
-      animation: floatAura 18s ease-in-out infinite alternate;
-    }
-
-    .ambient-glow-secondary {
-      position: fixed;
-      bottom: -150px;
-      right: -100px;
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 75%);
-      filter: blur(90px);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    @keyframes floatAura {
-      0% { transform: translateX(-55%) translateY(0) scale(1); }
-      100% { transform: translateX(-45%) translateY(80px) scale(1.15); }
-    }
-
-    /* Container Utility */
-    .container {
-      width: 100%;
-      max-width: 1240px;
-      margin: 0 auto;
-      padding: 0 24px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ==========================================================================
-       Header & Navigation
-       ========================================================================== */
-    .site-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 18px 0;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      background: rgba(8, 12, 20, 0.7);
-      border-bottom: 1px solid var(--border-subtle);
-      transition: var(--transition-smooth);
-    }
-
-    body.light-theme .site-header {
-      background: rgba(255, 255, 255, 0.8);
-    }
-
-    .nav-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand-logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: var(--text-main);
-      font-family: var(--font-display);
-      font-size: 1.45rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
-    .brand-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-sm);
-      background: var(--gradient-brand);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 20px var(--primary-glow);
-    }
-
-    .brand-icon svg {
-      width: 22px;
-      height: 22px;
-      fill: #ffffff;
-    }
-
-    .brand-logo span.gradient-text {
-      background: var(--gradient-brand);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      list-style: none;
-    }
-
-    .nav-link {
-      text-decoration: none;
-      color: var(--text-muted);
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: var(--transition-smooth);
-      position: relative;
-      padding: 6px 0;
-    }
-
-    .nav-link:hover, .nav-link.active {
-      color: var(--text-main);
-    }
-
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0%;
-      height: 2px;
-      background: var(--gradient-brand);
-      transition: width 0.3s ease;
-      border-radius: 2px;
-    }
-
-    .nav-link:hover::after, .nav-link.active::after {
-      width: 100%;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .theme-toggle-btn {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-main);
-      width: 40px;
-      height: 40px;
-      border-radius: var(--radius-full);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: var(--transition-smooth);
-    }
-
-    .theme-toggle-btn:hover {
-      border-color: var(--primary);
-      transform: rotate(15deg);
-    }
-
-    .theme-toggle-btn svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-    }
-
-    .btn-primary {
-      background: var(--gradient-brand);
-      color: #ffffff;
-      padding: 10px 24px;
-      border-radius: var(--radius-full);
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
-      transition: var(--transition-smooth);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.55);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-main);
-      border: 1px solid var(--border-subtle);
-      padding: 10px 24px;
-      border-radius: var(--radius-full);
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      transition: var(--transition-smooth);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-      transform: translateY(-2px);
-    }
-
-    /* Mobile Menu Toggle */
-    .mobile-menu-btn {
-      display: none;
-      background: transparent;
-      border: none;
-      color: var(--text-main);
-      cursor: pointer;
-      padding: 8px;
-    }
-
-    /* ==========================================================================
-       Hero Section
-       ========================================================================== */
-    .hero-section {
-      padding: 170px 0 100px;
-      position: relative;
-      text-align: center;
-    }
-
-    .badge-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(99, 102, 241, 0.12);
-      border: 1px solid rgba(99, 102, 241, 0.3);
-      color: #818cf8;
-      padding: 6px 18px;
-      border-radius: var(--radius-full);
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 24px;
-      backdrop-filter: blur(8px);
-    }
-
-    .badge-pill .pulse-dot {
-      width: 8px;
-      height: 8px;
-      background-color: var(--accent-cyan);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--accent-cyan);
-      animation: pulseDot 2s infinite;
-    }
-
-    @keyframes pulseDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
-    }
-
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(2.5rem, 6vw, 4.8rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -1.5px;
-      margin-bottom: 24px;
-      max-width: 960px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .hero-title .highlight {
-      background: var(--gradient-brand);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: inline-block;
-    }
-
-    .hero-subtitle {
-      font-size: clamp(1.05rem, 2vw, 1.3rem);
-      color: var(--text-muted);
-      max-width: 680px;
-      margin: 0 auto 40px;
-      font-weight: 400;
-    }
-
-    .hero-cta-group {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 60px;
-    }
-
-    /* Interactive Audio Visualizer Preview Card */
-    .hero-player-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 24px 32px;
-      max-width: 800px;
-      margin: 0 auto;
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      text-align: left;
-      transition: var(--transition-smooth);
-    }
-
-    .hero-player-card:hover {
-      border-color: var(--border-glow);
-      box-shadow: 0 25px 60px rgba(99, 102, 241, 0.2);
-    }
-
-    .player-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .player-track-info {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .track-cover {
-      width: 52px;
-      height: 52px;
-      border-radius: var(--radius-sm);
-      background: linear-gradient(135deg, #4f46e5, #06b6d4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
-    }
-
-    .track-titles h4 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--text-main);
-    }
-
-    .track-titles p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    .player-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .play-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--gradient-brand);
-      border: none;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 15px var(--primary-glow);
-      transition: var(--transition-smooth);
-    }
-
-    .play-btn:hover {
-      transform: scale(1.1);
-    }
-
-    /* Soundwave Animation */
-    .sound-wave-container {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      height: 42px;
-      padding: 0 10px;
-      width: 100%;
-    }
-
-    .wave-bar {
-      flex: 1;
-      height: 20%;
-      background: linear-gradient(to top, var(--primary), var(--accent-cyan));
-      border-radius: 99px;
-      transition: height 0.2s ease;
-    }
-
-    .sound-wave-container.playing .wave-bar {
-      animation: waveAnimation 1.2s ease-in-out infinite alternate;
-    }
-
-    .wave-bar:nth-child(2) { animation-delay: 0.1s; }
-    .wave-bar:nth-child(3) { animation-delay: 0.25s; }
-    .wave-bar:nth-child(4) { animation-delay: 0.4s; }
-    .wave-bar:nth-child(5) { animation-delay: 0.15s; }
-    .wave-bar:nth-child(6) { animation-delay: 0.3s; }
-    .wave-bar:nth-child(7) { animation-delay: 0.5s; }
-    .wave-bar:nth-child(8) { animation-delay: 0.2s; }
-    .wave-bar:nth-child(9) { animation-delay: 0.35s; }
-    .wave-bar:nth-child(10) { animation-delay: 0.45s; }
-    .wave-bar:nth-child(11) { animation-delay: 0.15s; }
-    .wave-bar:nth-child(12) { animation-delay: 0.3s; }
-    .wave-bar:nth-child(13) { animation-delay: 0.55s; }
-    .wave-bar:nth-child(14) { animation-delay: 0.25s; }
-    .wave-bar:nth-child(15) { animation-delay: 0.4s; }
-    .wave-bar:nth-child(16) { animation-delay: 0.2s; }
-
-    @keyframes waveAnimation {
-      0% { height: 15%; }
-      50% { height: 85%; }
-      100% { height: 35%; }
-    }
-
-    /* ==========================================================================
-       Features & Pillars Section
-       ========================================================================== */
-    .section {
-      padding: 90px 0;
-      position: relative;
-    }
-
-    .section-header {
-      text-align: center;
-      max-width: 650px;
-      margin: 0 auto 56px;
-    }
-
-    .section-tag {
-      color: var(--accent-cyan);
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 12px;
-      display: inline-block;
-    }
-
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 3.5vw, 2.8rem);
-      font-weight: 700;
-      letter-spacing: -0.8px;
-      margin-bottom: 16px;
-    }
-
-    .section-desc {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-    }
-
-    .feature-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 36px 28px;
-      transition: var(--transition-smooth);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .feature-card:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--border-glow);
-      transform: translateY(-6px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-    }
-
-    .feature-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: var(--gradient-brand);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .feature-card:hover::before {
-      opacity: 1;
-    }
-
-    .feature-icon-wrapper {
-      width: 56px;
-      height: 56px;
-      border-radius: var(--radius-md);
-      background: rgba(99, 102, 241, 0.1);
-      border: 1px solid rgba(99, 102, 241, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 24px;
-      font-size: 1.6rem;
-      transition: var(--transition-smooth);
-    }
-
-    .feature-card:hover .feature-icon-wrapper {
-      transform: scale(1.1);
-      background: rgba(99, 102, 241, 0.2);
-      border-color: var(--primary);
-    }
-
-    .feature-title {
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: var(--text-main);
-    }
-
-    .feature-desc {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-
-    /* ==========================================================================
-       Interactive Vibe Showcase / Filter Tabs
-       ========================================================================== */
-    .filter-tabs {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 40px;
-    }
-
-    .filter-btn {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-      padding: 10px 20px;
-      border-radius: var(--radius-full);
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: var(--transition-smooth);
-    }
-
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--gradient-brand);
-      color: #ffffff;
-      border-color: transparent;
-      box-shadow: 0 4px 18px var(--primary-glow);
-    }
-
-    .vibes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 28px;
-    }
-
-    .vibe-item-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      transition: var(--transition-smooth);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .vibe-item-card:hover {
-      transform: translateY(-8px);
-      border-color: var(--border-glow);
-      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
-    }
-
-    .card-thumb {
-      height: 190px;
-      width: 100%;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .card-thumb.bg-1 { background: linear-gradient(135deg, #1e1b4b, #312e81, #4338ca); }
-    .card-thumb.bg-2 { background: linear-gradient(135deg, #042f2e, #115e59, #0d9488); }
-    .card-thumb.bg-3 { background: linear-gradient(135deg, #4c0519, #881337, #be123c); }
-    .card-thumb.bg-4 { background: linear-gradient(135deg, #172554, #1e3a8a, #2563eb); }
-    .card-thumb.bg-5 { background: linear-gradient(135deg, #3b0764, #581c87, #7e22ce); }
-    .card-thumb.bg-6 { background: linear-gradient(135deg, #451a03, #78350f, #b45309); }
-
-    .card-thumb .badge-tag {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      background: rgba(0, 0, 0, 0.55);
-      backdrop-filter: blur(8px);
-      color: #fff;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 4px 10px;
-      border-radius: var(--radius-full);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-
-    .card-thumb .thumb-emoji {
-      font-size: 3.5rem;
-      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.4));
-      transition: transform 0.4s ease;
-    }
-
-    .vibe-item-card:hover .thumb-emoji {
-      transform: scale(1.15) rotate(4deg);
-    }
-
-    .card-body {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-
-    .card-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      margin-bottom: 8px;
-    }
-
-    .card-item-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--text-main);
-    }
-
-    .card-item-desc {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      line-height: 1.5;
-      margin-bottom: 20px;
-      flex-grow: 1;
-    }
-
-    .card-footer-action {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid var(--border-subtle);
-      padding-top: 16px;
-    }
-
-    .like-counter-btn {
-      background: transparent;
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-      padding: 6px 14px;
-      border-radius: var(--radius-full);
-      font-size: 0.85rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      transition: var(--transition-smooth);
-    }
-
-    .like-counter-btn:hover, .like-counter-btn.liked {
-      background: rgba(244, 63, 94, 0.15);
-      border-color: var(--accent-rose);
-      color: var(--accent-rose);
-    }
-
-    .card-action-link {
-      color: var(--accent-cyan);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: var(--transition-smooth);
-    }
-
-    .card-action-link:hover {
-      color: var(--text-main);
-      transform: translateX(4px);
-    }
-
-    /* ==========================================================================
-       Stats Banner
-       ========================================================================== */
-    .stats-section {
-      background: linear-gradient(180deg, transparent, rgba(99, 102, 241, 0.05) 50%, transparent);
-      border-top: 1px solid var(--border-subtle);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 60px 0;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 32px;
-      text-align: center;
-    }
-
-    .stat-number {
-      font-family: var(--font-display);
-      font-size: clamp(2.2rem, 4vw, 3.2rem);
-      font-weight: 800;
-      background: var(--gradient-brand);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 1.1;
-      margin-bottom: 6px;
-    }
-
-    .stat-label {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
-
-    /* ==========================================================================
-       Newsletter / Community Callout
-       ========================================================================== */
-    .cta-card-box {
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
-      border: 1px solid var(--border-glow);
-      border-radius: var(--radius-lg);
-      padding: 60px 40px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-    }
-
-    .cta-card-box::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 600px;
-      height: 300px;
-      background: radial-gradient(ellipse, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .newsletter-form {
-      display: flex;
-      max-width: 480px;
-      margin: 32px auto 0;
-      gap: 12px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .newsletter-input {
-      flex: 1;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-full);
-      padding: 12px 22px;
-      font-size: 0.95rem;
-      color: var(--text-main);
-      outline: none;
-      transition: var(--transition-smooth);
-    }
-
-    .newsletter-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 15px var(--primary-glow);
-    }
-
-    .newsletter-feedback {
-      margin-top: 14px;
-      font-size: 0.9rem;
-      min-height: 24px;
-      transition: var(--transition-smooth);
-    }
-
-    .newsletter-feedback.success { color: var(--accent-emerald); }
-    .newsletter-feedback.error { color: var(--accent-rose); }
-
-    /* ==========================================================================
-       Footer
-       ========================================================================== */
-    .site-footer {
-      border-top: 1px solid var(--border-subtle);
-      padding: 60px 0 30px;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    .footer-top {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 40px;
-      margin-bottom: 40px;
-    }
-
-    .footer-brand-info {
-      max-width: 360px;
-    }
-
-    .footer-brand-info p {
-      margin-top: 14px;
-      line-height: 1.6;
-    }
-
-    .footer-links-group {
-      display: flex;
-      gap: 60px;
-      flex-wrap: wrap;
-    }
-
-    .footer-col h5 {
-      color: var(--text-main);
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-
-    .footer-col ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .footer-col a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: var(--transition-smooth);
-    }
-
-    .footer-col a:hover {
-      color: var(--accent-cyan);
-    }
-
-    .footer-bottom {
-      border-top: 1px solid var(--border-subtle);
-      padding-top: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      font-size: 0.85rem;
-    }
-
-    .social-links {
-      display: flex;
-      gap: 16px;
-    }
-
-    .social-icon-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: var(--transition-smooth);
-    }
-
-    .social-icon-btn:hover {
-      color: #fff;
-      background: var(--primary);
-      border-color: var(--primary);
-      transform: translateY(-2px);
-    }
-
-    /* Toast Notification */
-    .toast-box {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #1e293b;
-      color: #fff;
-      padding: 14px 24px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--accent-emerald);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      transform: translateY(120%);
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 500;
-    }
-
-    .toast-box.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    /* ==========================================================================
-       Responsive Media Queries
-       ========================================================================== */
-    @media (max-width: 900px) {
-      .nav-links {
-        display: none;
-      }
-
-      .mobile-menu-btn {
-        display: block;
-      }
-
-      .nav-links.active-mobile {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--bg-surface);
-        padding: 24px;
-        border-bottom: 1px solid var(--border-subtle);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      }
-
-      .newsletter-form {
-        flex-direction: column;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .hero-section {
-        padding: 130px 0 60px;
-      }
-
-      .hero-player-card {
-        padding: 18px 20px;
-      }
-
-      .cta-card-box {
-        padding: 40px 20px;
-      }
-
-      .footer-links-group {
-        gap: 32px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <!-- Ambient Background Lighting -->
-  <div class="ambient-glow" aria-hidden="true"></div>
-  <div class="ambient-glow-secondary" aria-hidden="true"></div>
+<body class="light-theme">
 
-  <!-- Main Navigation Header -->
-  <header class="site-header" id="mainHeader">
-    <div class="container nav-wrapper">
-      <a href="#" class="brand-logo" id="brandLogo">
-        <div class="brand-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
-          </svg>
-        </div>
-        <span>BD <span class="gradient-text">VIBE</span></span>
-      </a>
+  <!-- =========================================================================
+       0. AMBIENT AURORA GLOW BACKGROUND
+       ========================================================================= -->
+  <div class="ambient-glow-wrap" aria-hidden="true">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+  </div>
 
-      <!-- Desktop Navigation -->
-      <nav aria-label="Main Navigation">
-        <ul class="nav-links" id="navLinks">
-          <li><a href="#home" class="nav-link active">Home</a></li>
-          <li><a href="#experience" class="nav-link">Experience</a></li>
-          <li><a href="#showcase" class="nav-link">Trending Vibes</a></li>
-          <li><a href="#community" class="nav-link">Community</a></li>
-          <li><a href="#about" class="nav-link">About</a></li>
-        </ul>
-      </nav>
-
-      <!-- Header Actions -->
-      <div class="nav-actions">
-        <!-- Theme Toggle -->
-        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light or dark theme" title="Toggle Theme">
-          <svg id="themeIcon" viewBox="0 0 24 24">
-            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+  <!-- =========================================================================
+       1. GLOBAL HEADER (Aurora Brand, Spotlight Search, Live Clock & Status)
+       ========================================================================= -->
+  <header class="msn-header" id="msnHeader">
+    <div class="msn-header-container">
+      
+      <!-- Left: Category Menu + Brand Emblem -->
+      <div class="msn-header-left">
+        <button class="msn-waffle-btn" id="waffleMenuBtn" aria-label="অ্যাপস ও ক্যাটাগরি মেনু" title="ক্যাটাগরি ড্রয়ার">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="4" cy="4" r="2.2"></circle>
+            <circle cx="12" cy="4" r="2.2"></circle>
+            <circle cx="20" cy="4" r="2.2"></circle>
+            <circle cx="4" cy="12" r="2.2"></circle>
+            <circle cx="12" cy="12" r="2.2"></circle>
+            <circle cx="20" cy="12" r="2.2"></circle>
+            <circle cx="4" cy="20" r="2.2"></circle>
+            <circle cx="12" cy="20" r="2.2"></circle>
+            <circle cx="20" cy="20" r="2.2"></circle>
           </svg>
         </button>
 
-        <a href="#showcase" class="btn-primary" id="ctaHeaderBtn">
-          <span>Explore Vibes</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+        <a href="#" class="msn-logo-lockup" id="brandLogo" onclick="resetToHome(); return false;" title="BDVibe">
+          <div class="msn-butterfly">
+            <span class="bf-sq bf-blue"></span>
+            <span class="bf-sq bf-green"></span>
+            <span class="bf-sq bf-yellow"></span>
+            <span class="bf-sq bf-red"></span>
+          </div>
+          <div class="msn-logo-text-wrap">
+            <span class="msn-logo-main">BD<span class="logo-accent">Vibe</span></span>
+            <span class="msn-logo-tag">বাংলাদেশ</span>
+          </div>
         </a>
+      </div>
 
-        <!-- Mobile Menu Toggle Button -->
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
+      <!-- Center: Apple Spotlight / Linear Style Search Bar -->
+      <div class="msn-search-wrap">
+        <div class="msn-search-bar" id="msnSearchBar">
+          <svg class="bing-lens" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="অনুসন্ধান করুন... (যেমন: রাজনীতি, অর্থনীতি, প্রযুক্তি, কৃষি)" 
+            aria-label="অনুসন্ধান"
+            autocomplete="off"
+          >
+          <button id="searchClearBtn" class="search-clear-btn" title="মুছে ফেলুন" style="display: none;">✕</button>
+          <button id="searchSubmitBtn" class="search-submit-btn" title="অনুসন্ধান করুন">
+            <span>খুঁজুন</span>
+          </button>
+        </div>
+        <!-- Live Instant Suggestions Dropdown -->
+        <div class="search-suggestions-dropdown" id="searchSuggestionsDropdown" style="display: none;">
+          <div class="suggestions-header">
+            <span>🔍 তাত্ক্ষণিক ফলাফল</span>
+            <span class="suggestions-close" id="closeSuggestionsBtn">✕</span>
+          </div>
+          <div class="suggestions-list" id="suggestionsList">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Live Clock, Weather, Refresh, Bookmarks, Theme & Profile -->
+      <div class="msn-header-right">
+        
+        <!-- Live Clock Pill -->
+        <div class="msn-clock-pill" id="liveClockPill" title="বর্তমান সময়">
+          <span class="live-dot"></span>
+          <span id="liveTimeText">১২:০০:০০ PM</span>
+        </div>
+
+        <!-- Weather Mini Pill -->
+        <div class="msn-weather-pill" id="headerWeatherPill" title="ঢাকার আবহাওয়া">
+          <span class="wx-icon">⛅</span>
+          <span class="wx-temp" id="headerWeatherTemp">ঢাকা ২৯°</span>
+        </div>
+
+        <!-- Refresh Button -->
+        <button class="msn-icon-btn" id="manualRefreshBtn" title="নতুন কনটেন্ট রিফ্রেশ করুন">
+          <svg class="spin-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
           </svg>
         </button>
+
+        <!-- Saved Bookmarks -->
+        <button class="msn-icon-btn bookmark-btn" id="savedNewsModalBtn" title="সংরক্ষিত কনটেন্ট">
+          <span class="icon">🔖</span>
+          <span class="badge" id="savedCounter">০</span>
+        </button>
+
+        <!-- Theme Toggle (Light / Dark) -->
+        <button class="msn-icon-btn" id="themeToggleBtn" title="থিম পরিবর্তন" aria-label="ডার্ক বা লাইট মোড">
+          <span id="themeIcon">🌙</span>
+        </button>
+
+        <!-- User Profile Avatar -->
+        <div class="msn-user-avatar" title="আমার প্রোফাইল">
+          <span>বিডি</span>
+        </div>
       </div>
+
     </div>
   </header>
 
-  <!-- Main Content Wrapper -->
-  <main id="home">
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="container">
-        <div class="badge-pill">
-          <span class="pulse-dot"></span>
-          <span>Next-Gen Urban & Cultural Hub</span>
-        </div>
+  <!-- =========================================================================
+       2. SERVICES STRIPE (Horizontal Category Navigation Ribbon)
+       ========================================================================= -->
+  <nav class="msn-nav-stripe" aria-label="প্রধান ক্যাটাগরি মেনু">
+    <div class="msn-nav-container">
+      <a href="#" class="nav-tab active" data-cat="all" onclick="filterByCategory('all'); return false;">🏠 হোম</a>
+      <a href="#" class="nav-tab nav-tab-live" data-cat="live" onclick="filterByCategory('live'); return false;"><span class="live-pulse-dot"></span> লাইভ ভিডিও</a>
+      <a href="#" class="nav-tab" data-cat="politics" onclick="filterByCategory('politics'); return false;">🏛️ রাজনীতি</a>
+      <a href="#" class="nav-tab" data-cat="economy" onclick="filterByCategory('economy'); return false;">📈 অর্থনীতি ও বাণিজ্য</a>
+      <a href="#" class="nav-tab" data-cat="tech" onclick="filterByCategory('tech'); return false;">⚡ প্রযুক্তি</a>
+      <a href="#" class="nav-tab" data-cat="agriculture" onclick="filterByCategory('agriculture'); return false;">🌾 কৃষি ও প্রকৃতি</a>
+      <a href="#" class="nav-tab" data-cat="education" onclick="filterByCategory('education'); return false;">🎓 শিক্ষা ও ক্যারিয়ার</a>
+      <a href="#" class="nav-tab" data-cat="career" onclick="filterByCategory('career'); return false;">💼 চাকরি ও কর্মসংস্থান</a>
+      <a href="#" class="nav-tab" data-cat="lifestyle" onclick="filterByCategory('lifestyle'); return false;">✨ লাইফস্টাইল</a>
+      <a href="#" class="nav-tab" data-cat="sports" onclick="filterByCategory('sports'); return false;">⚽ খেলাধুলা</a>
+      <a href="#" class="nav-tab" data-cat="entertainment" onclick="filterByCategory('entertainment'); return false;">🎬 বিনোদন</a>
+      <a href="#" class="nav-tab" data-cat="health" onclick="filterByCategory('health'); return false;">🩺 স্বাস্থ্য</a>
+      <a href="#" class="nav-tab" data-cat="probash" onclick="filterByCategory('probash'); return false;">✈️ প্রবাস</a>
+      <a href="#" class="nav-tab nav-tab-watch" onclick="filterByCategory('live'); return false;">🔴 লাইভ ও ভিডিও</a>
+    </div>
+  </nav>
 
-        <h1 class="hero-title">
-          Feel The Pulse. <br>
-          Live The <span class="highlight">BD Vibe</span>.
-        </h1>
-
-        <p class="hero-subtitle">
-          The ultimate digital space celebrating modern sounds, creative youth culture, independent art, and contemporary lifestyle across Bangladesh.
-        </p>
-
-        <div class="hero-cta-group">
-          <a href="#showcase" class="btn-primary" id="heroExploreBtn">
-            <span>Discover Vibes</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M13 5l7 7-7 7M5 12h15"/>
-            </svg>
-          </a>
-          <button class="btn-secondary" id="previewPlayerBtn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-            <span>Play Vibe Sampler</span>
-          </button>
-        </div>
-
-        <!-- Interactive Audio Player Card -->
-        <div class="hero-player-card" id="playerCard">
-          <div class="player-header">
-            <div class="player-track-info">
-              <div class="track-cover" id="trackCoverIcon">🎧</div>
-              <div class="track-titles">
-                <h4 id="nowPlayingTitle">Dhaka Midnight Drift (Lofi Beats)</h4>
-                <p id="nowPlayingArtist">BD Vibe Originals • 128 BPM • Chillwave</p>
-              </div>
-            </div>
-
-            <div class="player-controls">
-              <button class="play-btn" id="audioToggleBtn" aria-label="Play or Pause Track">
-                <svg id="playPauseIcon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Animated Audio Waveform -->
-          <div class="sound-wave-container" id="soundWave">
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-          </div>
-        </div>
+  <!-- =========================================================================
+       3. TRENDING STRIPE (Trending Topics + Live Date)
+       ========================================================================= -->
+  <div class="msn-trending-stripe">
+    <div class="msn-trending-container">
+      <div class="trending-badge">
+        <span class="flame">🔥</span>
+        <span>আজকের ট্রেন্ডিং:</span>
       </div>
-    </section>
-
-    <!-- Experience / Pillars Section -->
-    <section class="section" id="experience">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Core Experience</span>
-          <h2 class="section-title">What Defines The BD Vibe?</h2>
-          <p class="section-desc">From vibrant underground soundscapes to pioneering creative collectives, experience the wave reshaping culture.</p>
-        </div>
-
-        <div class="features-grid">
-          <!-- Feature 1 -->
-          <article class="feature-card">
-            <div class="feature-icon-wrapper">🎵</div>
-            <h3 class="feature-title">Original Soundtracks</h3>
-            <p class="feature-desc">Curated synthwave, ambient lofi, experimental hip-hop, and Bengali folk-electronic crossovers produced by indie innovators.</p>
-          </article>
-
-          <!-- Feature 2 -->
-          <article class="feature-card">
-            <div class="feature-icon-wrapper">🎨</div>
-            <h3 class="feature-title">Digital Art & Visuals</h3>
-            <p class="feature-desc">Spotlighting cutting-edge graphic designers, 3D visualizers, graffiti artists, and illustrators redefining Bangladesh's aesthetic.</p>
-          </article>
-
-          <!-- Feature 3 -->
-          <article class="feature-card">
-            <div class="feature-icon-wrapper">⚡</div>
-            <h3 class="feature-title">Underground Gigs</h3>
-            <p class="feature-desc">Live community jams, indie rooftop sessions, and secret warehouse showcases across Dhaka, Chittagong, and Sylhet.</p>
-          </article>
-
-          <!-- Feature 4 -->
-          <article class="feature-card">
-            <div class="feature-icon-wrapper">🌐</div>
-            <h3 class="feature-title">Global Collective</h3>
-            <p class="feature-desc">Bridging local creators with the international diaspora, building a boundless hub for creative exchange and collaboration.</p>
-          </article>
-        </div>
+      <div class="trending-tags-track" id="trendingChipsWrap">
+        <button class="tag-pill" onclick="searchTopic('নির্বাচন')"># নির্বাচন সংস্কার</button>
+        <button class="tag-pill" onclick="searchTopic('ডলার')"># ডলার রেট ১২২.২০ ৳</button>
+        <button class="tag-pill" onclick="searchTopic('স্বর্ণ')"># স্বর্ণের ভরি ১,৪৪,৫০০ ৳</button>
+        <button class="tag-pill" onclick="searchTopic('বিপিএল')"># বিপিএল ও ক্রিকেট</button>
+        <button class="tag-pill" onclick="searchTopic('কৃত্রিম বুদ্ধিমত্তা')"># কৃত্রিম বুদ্ধিমত্তা</button>
+        <button class="tag-pill" onclick="searchTopic('কৃষি')"># কৃষি বিপ্লব</button>
+        <button class="tag-pill" onclick="searchTopic('চাকরি')"># বিসিএস ও নিয়োগ</button>
       </div>
-    </section>
-
-    <!-- Trending Showcase Section -->
-    <section class="section" id="showcase">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Curated Collections</span>
-          <h2 class="section-title">Trending Vibes This Week</h2>
-          <p class="section-desc">Dive into curated audio drops, visual stories, and community picks.</p>
-        </div>
-
-        <!-- Filter Tabs -->
-        <div class="filter-tabs" id="vibeFilterTabs">
-          <button class="filter-btn active" data-filter="all">All Vibes</button>
-          <button class="filter-btn" data-filter="music">Music & Beats</button>
-          <button class="filter-btn" data-filter="lifestyle">Urban Lifestyle</button>
-          <button class="filter-btn" data-filter="events">Live Events</button>
-        </div>
-
-        <!-- Grid of Vibes -->
-        <div class="vibes-grid" id="vibesGrid">
-          <!-- Card 1 -->
-          <div class="vibe-item-card" data-category="music">
-            <div class="card-thumb bg-1">
-              <span class="badge-tag">Beats</span>
-              <span class="thumb-emoji">🎹</span>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span>By Arafat & The Echo</span> • <span>3.4k Plays</span>
-              </div>
-              <h3 class="card-item-title">Old Town Monsoon Grooves</h3>
-              <p class="card-item-desc">A fusion of traditional flute melodies with smooth 808 sub-bass, reflecting rainy evenings in Puran Dhaka.</p>
-              <div class="card-footer-action">
-                <button class="like-counter-btn" data-count="342">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                  </svg>
-                  <span class="like-number">342</span>
-                </button>
-                <a href="#playerCard" class="card-action-link select-track-btn" data-title="Old Town Monsoon Grooves" data-artist="Arafat & The Echo">
-                  <span>Listen Now</span> →
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 2 -->
-          <div class="vibe-item-card" data-category="lifestyle">
-            <div class="card-thumb bg-2">
-              <span class="badge-tag">Fashion</span>
-              <span class="thumb-emoji">🧥</span>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span>Street Culture</span> • <span>5 min read</span>
-              </div>
-              <h3 class="card-item-title">Dhaka Streetwear Revolution</h3>
-              <p class="card-item-desc">How local independent designers are revitalizing Jamdani and Khadi into avant-garde oversized street fashion.</p>
-              <div class="card-footer-action">
-                <button class="like-counter-btn" data-count="518">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                  </svg>
-                  <span class="like-number">518</span>
-                </button>
-                <a href="#" class="card-action-link" onclick="triggerToast('Story saved to your reading list!'); return false;">
-                  <span>Read Story</span> →
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 3 -->
-          <div class="vibe-item-card" data-category="events">
-            <div class="card-thumb bg-3">
-              <span class="badge-tag">Live Session</span>
-              <span class="thumb-emoji">🔥</span>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span>Upcoming</span> • <span>Banani Rooftop</span>
-              </div>
-              <h3 class="card-item-title">Cyber Baul Sunset Session</h3>
-              <p class="card-item-desc">An intimate acoustic-ambient rooftop gig blending mystic Baul philosophy with modular analog synthesizers.</p>
-              <div class="card-footer-action">
-                <button class="like-counter-btn" data-count="892">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                  </svg>
-                  <span class="like-number">892</span>
-                </button>
-                <a href="#" class="card-action-link" onclick="triggerToast('RSVP request submitted for Cyber Baul!'); return false;">
-                  <span>RSVP Pass</span> →
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 4 -->
-          <div class="vibe-item-card" data-category="music">
-            <div class="card-thumb bg-4">
-              <span class="badge-tag">Electronic</span>
-              <span class="thumb-emoji">🌌</span>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span>By Neon Padma</span> • <span>5.1k Plays</span>
-              </div>
-              <h3 class="card-item-title">Padma Bridge Cyber Horizon</h3>
-              <p class="card-item-desc">High-tempo synthwave capturing the nocturnal thrill of cruising across the illuminated Padma river expressways.</p>
-              <div class="card-footer-action">
-                <button class="like-counter-btn" data-count="621">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                  </svg>
-                  <span class="like-number">621</span>
-                </button>
-                <a href="#playerCard" class="card-action-link select-track-btn" data-title="Padma Bridge Cyber Horizon" data-artist="Neon Padma">
-                  <span>Listen Now</span> →
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 5 -->
-          <div class="vibe-item-card" data-category="lifestyle">
-            <div class="card-thumb bg-5">
-              <span class="badge-tag">Visuals</span>
-              <span class="thumb-emoji">🎨</span>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span>Art Showcase</span> • <span>Gallery</span>
-              </div>
-              <h3 class="card-item-title">Rickshaw Neon Futurism</h3>
-              <p class="card-item-desc">A vivid celebration of Dhaka's world-famous rickshaw art translated into interactive 3D virtual installations.</p>
-              <div class="card-footer-action">
-                <button class="like-counter-btn" data-count="740">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                  </svg>
-                  <span class="like-number">740</span>
-                </button>
-                <a href="#" class="card-action-link" onclick="triggerToast('Opening visual gallery preview...'); return false;">
-                  <span>View Art</span> →
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 6 -->
-          <div class="vibe-item-card" data-category="events">
-            <div class="card-thumb bg-6">
-              <span class="badge-tag">Festival</span>
-              <span class="thumb-emoji">⛺</span>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span>Annual</span> • <span>Sreemangal Valley</span>
-              </div>
-              <h3 class="card-item-title">Tea Garden Sound Camp 2026</h3>
-              <p class="card-item-desc">A three-day open-air retreat surrounded by misty tea gardens, featuring acoustic sets and stargazing beats.</p>
-              <div class="card-footer-action">
-                <button class="like-counter-btn" data-count="1104">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                  </svg>
-                  <span class="like-number">1,104</span>
-                </button>
-                <a href="#" class="card-action-link" onclick="triggerToast('Sound Camp 2026 waitlist joined!'); return false;">
-                  <span>Join Waitlist</span> →
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="live-date-badge hide-mobile">
+        <span id="topBarDate">মঙ্গলবার, ২১ অক্টোবর ২০২৬</span>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- Metrics / Impact Banner -->
-    <section class="stats-section">
-      <div class="container">
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-number">45K+</div>
-            <div class="stat-label">Active Community Members</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">180+</div>
-            <div class="stat-label">Indie Audio Tracks Released</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">64</div>
-            <div class="stat-label">Secret Rooftop Gigs Hosted</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">99.8%</div>
-            <div class="stat-label">Positive Vibe Rating</div>
-          </div>
+  <!-- =========================================================================
+       4. TOP BILLBOARD SPONSORED BANNER (Clean MSN Ad Standard)
+       ========================================================================= -->
+  <div class="msn-billboard" id="billboardAdContainer">
+    <div class="billboard-box">
+      <span class="ad-pill">📢 টেস্ট অ্যাড</span>
+      <a href="#" id="billboardAdLink" class="ad-link" target="_blank" rel="noopener sponsored">
+        <span class="ad-badge-icon">AD</span>
+        <div class="ad-text-group">
+          <strong id="billboardSponsor">ডিজিটাল বাংলাদেশ ২০২৬ সামিট</strong>
+          <span id="billboardTitle">দেশের সর্ববৃহৎ উদ্ভাবনী প্রযুক্তি মেলা — আজই ফ্রি পাস বুক করুন</span>
         </div>
-      </div>
-    </section>
+        <span class="ad-cta">বিস্তারিত দেখুন →</span>
+      </a>
+      <button class="ad-close" id="closeBillboardBtn" title="বিজ্ঞাপন লুকান">×</button>
+    </div>
+  </div>
 
-    <!-- Community & Newsletter CTA -->
-    <section class="section" id="community">
-      <div class="container">
-        <div class="cta-card-box">
-          <span class="badge-pill">Join The Movement</span>
-          <h2 class="section-title" style="margin-top: 10px;">Never Miss A Vibe</h2>
-          <p class="section-desc" style="max-width: 580px; margin: 0 auto;">
-            Get weekly secret gig invites, early vinyl & digital drops, and exclusive visual essays delivered straight to your inbox.
-          </p>
+  <!-- =========================================================================
+       5. MAIN VIEWPORT (Unified MSN 4-Column Continuous Stream)
+       ========================================================================= -->
+  <main class="msn-main">
+    <div class="msn-container">
 
-          <form class="newsletter-form" id="newsletterForm" onsubmit="handleNewsletterSubmit(event)">
-            <input 
-              type="email" 
-              class="newsletter-input" 
-              id="userEmail" 
-              placeholder="Enter your email (e.g. you@bdvibe.com)" 
-              required
-              aria-label="Email Address"
-            >
-            <button type="submit" class="btn-primary" id="subscribeBtn">
-              <span>Subscribe</span>
-            </button>
-          </form>
-
-          <div class="newsletter-feedback" id="newsletterFeedback"></div>
+      <!-- Active Filter Indicator (If Search or Category filter is applied) -->
+      <div class="filter-indicator-bar" id="filterStatusBanner" style="display: none;">
+        <div class="filter-indicator-title">
+          <span id="filterStatusTitle">ফিল্টার ফলাফল</span>
+          <span class="badge" id="filterCount"></span>
         </div>
+        <button class="filter-clear-btn" id="resetFilterBtn">সকল কনটেন্টে ফিরে যান ✕</button>
       </div>
-    </section>
+
+      <!-- The Official MSN 4-Column Continuous Dense Feed (ZERO GAPS + UNIFIED 320px CARDS) -->
+      <div class="msn-dense-stream-grid" id="mainDenseStreamGrid">
+        <!-- Dynamically populated by JS: 320px uniform cards + widgets + test ads -->
+      </div>
+
+      <div class="load-more-wrap" style="margin: 32px 0 60px; text-align: center;">
+        <button class="msn-load-more-btn" id="streamLoadMoreBtn">আরও সংবাদ ও ভিডিও লোড হচ্ছে... (স্ক্রোল করুন) ↓</button>
+      </div>
+
+    </div>
   </main>
 
-  <!-- Site Footer -->
-  <footer class="site-footer" id="about">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand-info">
-          <a href="#" class="brand-logo">
-            <div class="brand-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
-              </svg>
-            </div>
-            <span>BD <span class="gradient-text">VIBE</span></span>
-          </a>
-          <p>
-            An independent creative and cultural platform dedicated to empowering authentic musical expressions, visionary digital art, and underground gatherings across Bangladesh.
-          </p>
+  <!-- =========================================================================
+       6. MSN FOOTER (Minimalist Microsoft Standard)
+       ========================================================================= -->
+  <footer class="msn-footer">
+    <div class="msn-footer-container">
+      <div class="footer-top-row">
+        <div class="footer-brand">
+          <div class="msn-butterfly mini">
+            <span class="bf-sq bf-blue"></span>
+            <span class="bf-sq bf-green"></span>
+            <span class="bf-sq bf-yellow"></span>
+            <span class="bf-sq bf-red"></span>
+          </div>
+          <span class="footer-brand-name">BDVibe</span>
+          <span class="footer-tagline">— আধুনিক ডিজিটাল কনটেন্ট ও ইনফো পোর্টাল</span>
         </div>
-
-        <div class="footer-links-group">
-          <div class="footer-col">
-            <h5>Explore</h5>
-            <ul>
-              <li><a href="#showcase">Soundscapes</a></li>
-              <li><a href="#showcase">Visual Arts</a></li>
-              <li><a href="#showcase">Secret Gigs</a></li>
-              <li><a href="#experience">Manifesto</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-col">
-            <h5>Community</h5>
-            <ul>
-              <li><a href="#community">Creator Discord</a></li>
-              <li><a href="#community">Submission Portal</a></li>
-              <li><a href="#community">Volunteer Crew</a></li>
-              <li><a href="#community">Press & Media</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-col">
-            <h5>Connect</h5>
-            <ul>
-              <li><a href="#">Dhaka, Bangladesh</a></li>
-              <li><a href="mailto:hello@bdvibe.com">hello@bdvibe.com</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms of Vibe</a></li>
-            </ul>
-          </div>
+        <div class="footer-links">
+          <a href="#" onclick="filterByCategory('all'); return false;">হোম</a>
+          <a href="#" onclick="filterByCategory('politics'); return false;">রাজনীতি</a>
+          <a href="#" onclick="filterByCategory('economy'); return false;">অর্থনীতি</a>
+          <a href="#" onclick="filterByCategory('tech'); return false;">প্রযুক্তি</a>
+          <a href="#" onclick="filterByCategory('lifestyle'); return false;">লাইফস্টাইল</a>
+          <a href="#" onclick="filterByCategory('agriculture'); return false;">কৃষি</a>
+          <a href="#" onclick="filterByCategory('sports'); return false;">খেলাধুলা</a>
+          <a href="#" onclick="filterByCategory('live'); return false;">লাইভ ভিডিও</a>
         </div>
       </div>
-
-      <div class="footer-bottom">
-        <div>© 2026 BD Vibe. Crafted with passion for modern Bangladesh.</div>
-        <div class="social-links">
-          <a href="#" class="social-icon-btn" aria-label="Spotify" title="Spotify">🎵</a>
-          <a href="#" class="social-icon-btn" aria-label="Instagram" title="Instagram">📸</a>
-          <a href="#" class="social-icon-btn" aria-label="YouTube" title="YouTube">▶️</a>
-          <a href="#" class="social-icon-btn" aria-label="GitHub" title="GitHub">💻</a>
+      <div class="footer-bottom-row">
+        <p class="copyright">© ২০২৬ BDVibe (বিডি ভাইব) • সকল অধিকার সংরক্ষিত। কনটেন্টসমূহ সংশ্লিষ্ট বাংলাদেশী সংবাদমাধ্যম ও অনলাইন পোর্টাল থেকে স্বয়ংক্রিয়ভাবে সংগৃহীত।</p>
+        <div class="msn-footer-badges">
+          <span>BDVibe স্মার্ট ডিজিটাল পোর্টাল</span>
+          <span>•</span>
+          <span>সর্বশেষ আপডেট: <span id="footerUpdateTime">রিয়েল-টাইম লাইভ</span></span>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- Toast Element -->
-  <div class="toast-box" id="toastBox">
-    <span>✨</span>
-    <span id="toastMessage">Action completed successfully!</span>
+  <!-- =========================================================================
+       7. WAFFLE MEGA MENU DRAWER (Microsoft 365 Apps Drawer Style)
+       ========================================================================= -->
+  <div class="waffle-drawer-overlay" id="waffleDrawerOverlay">
+    <div class="waffle-drawer-content">
+      <div class="waffle-drawer-header">
+        <div class="drawer-title">
+          <div class="msn-butterfly mini">
+            <span class="bf-sq bf-blue"></span>
+            <span class="bf-sq bf-green"></span>
+            <span class="bf-sq bf-yellow"></span>
+            <span class="bf-sq bf-red"></span>
+          </div>
+          <h4>BDVibe সার্ভিসেস ও ক্যাটাগরি</h4>
+        </div>
+        <button class="drawer-close-btn" id="closeWaffleBtn">×</button>
+      </div>
+
+      <div class="waffle-apps-grid">
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('all'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🌐</span>
+          <span class="app-label">সকল বিষয়</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('politics'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🏛️</span>
+          <span class="app-label">রাজনীতি</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('economy'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">📈</span>
+          <span class="app-label">অর্থনীতি ও বাণিজ্য</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('tech'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">💻</span>
+          <span class="app-label">প্রযুক্তি ও গ্যাজেট</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('lifestyle'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">✨</span>
+          <span class="app-label">লাইফস্টাইল</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('education'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🎓</span>
+          <span class="app-label">শিক্ষা</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('agriculture'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🌾</span>
+          <span class="app-label">কৃষি সংবাদ</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('career'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">💼</span>
+          <span class="app-label">ক্যারিয়ার ও চাকরি</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('sports'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">⚽</span>
+          <span class="app-label">খেলাধুলা</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('entertainment'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🎬</span>
+          <span class="app-label">বিনোদন</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('health'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🩺</span>
+          <span class="app-label">স্বাস্থ্য ও চিকিৎসা</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('probash'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">✈️</span>
+          <span class="app-label">প্রবাস</span>
+        </a>
+        <a href="#" class="waffle-app-item" onclick="filterByCategory('live'); closeWaffleDrawer(); return false;">
+          <span class="app-icon">🎥</span>
+          <span class="app-label">ওয়াচ / ভিডিও</span>
+        </a>
+      </div>
+    </div>
   </div>
 
-  <!-- JavaScript Logic & Interactivity -->
-  <script>
-    // ==========================================
-    // Theme Switcher (Dark / Light)
-    // ==========================================
-    const themeToggleBtn = document.getElementById('themeToggleBtn');
-    const themeIcon = document.getElementById('themeIcon');
-    let isLight = false;
-
-    themeToggleBtn.addEventListener('click', () => {
-      isLight = !isLight;
-      document.body.classList.toggle('light-theme', isLight);
+  <!-- =========================================================================
+       8. ARTICLE FULL READER MODAL (Clean Apple News / Medium Reader) + SIDE ADS
+       ========================================================================= -->
+  <div class="reader-modal-overlay" id="articleReaderModal">
+    <div class="reader-modal-layout-wrapper">
       
-      // Update icon
-      if (isLight) {
-        themeIcon.innerHTML = '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z"/>';
-      } else {
-        themeIcon.innerHTML = '<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>';
-      }
-      triggerToast(isLight ? 'Switched to Light mode' : 'Switched to Dark Obsidian mode');
-    });
+      <!-- Left Skyscraper Test Ad Slot -->
+      <aside class="modal-side-ad modal-side-ad-left" id="modalSideAdLeft" onclick="handleSideAdClick(0)">
+        <div class="side-ad-header">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="side-ad-badge">📢 টেস্ট অ্যাড</span>
+            <span class="side-ad-refresh-badge" title="বিজ্ঞাপন পলিসি অনুযায়ী প্রতি ৩০ সেকেন্ডে রিফ্রেশ">⏱ ৩০ সে.</span>
+          </div>
+          <span class="side-ad-info-btn" title="বিজ্ঞাপন তথ্য">•••</span>
+        </div>
+        <div class="side-ad-media">
+          <img id="sideAdLeftImg" src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=400&q=80" alt="টেস্ট বিজ্ঞাপন">
+        </div>
+        <div class="side-ad-body">
+          <div class="side-ad-sponsor-row">
+            <span class="side-ad-avatar">ব</span>
+            <span class="side-ad-sponsor" id="sideAdLeftSponsor">বিকাশ লিমিটেড</span>
+          </div>
+          <h4 class="side-ad-title" id="sideAdLeftTitle">বিকাশ অ্যাপে সেন্ড মানি সম্পূর্ণ ফ্রি! আজই ক্যাশব্যাক অফার নিন</h4>
+          <p class="side-ad-desc" id="sideAdLeftDesc">মার্চেন্ট পেমেন্টে ইনস্ট্যান্ট ক্যাশব্যাক ও আকর্ষণীয় রিচার্জ অফার।</p>
+          <button class="side-ad-action-btn" id="sideAdLeftCta">অফার দেখুন ↗</button>
+          <span class="side-ad-disclaimer">স্পনসরড বিজ্ঞাপন প্লেসমেন্ট</span>
+        </div>
+      </aside>
 
-    // ==========================================
-    // Mobile Navigation Menu Toggle
-    // ==========================================
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const navLinks = document.getElementById('navLinks');
+      <!-- Center Main Reader Box -->
+      <div class="reader-modal-box">
+        <!-- Reading Progress Indicator Bar -->
+        <div id="readerProgressBar" style="height: 3px; background: var(--gradient-brand); width: 0%; transition: width 0.1s linear;"></div>
 
-    mobileMenuBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('active-mobile');
-    });
+        <div class="reader-modal-header">
+          <div class="reader-meta-group">
+            <span class="source-tag" id="modalSource">প্রথম আলো</span>
+            <span class="dot">•</span>
+            <span class="category-tag" id="modalCategory">প্রযুক্তি</span>
+            <span class="dot">•</span>
+            <span class="time-tag" id="modalTime">১০ মিনিট আগে</span>
+          </div>
+          <div class="reader-actions-right">
+            <button class="icon-btn" id="modalSpeakBtn" title="সংবাদ পাঠ শুনুন (Audio)">🔊</button>
+            <button class="icon-btn" id="modalFontDecBtn" title="ছোট ফন্ট">A-</button>
+            <button class="icon-btn" id="modalFontIncBtn" title="বড় ফন্ট">A+</button>
+            <button class="icon-btn" id="modalBookmarkBtn" title="সংরক্ষণ করুন">🔖</button>
+            <button class="icon-btn" id="modalShareBtn" title="শেয়ার করুন">🔗</button>
+            <button class="icon-btn close-btn" id="modalCloseBtn" title="বন্ধ করুন">×</button>
+          </div>
+        </div>
 
-    // Close mobile menu on clicking any navigation link
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active-mobile');
-      });
-    });
+        <div class="reader-modal-body">
+          <h1 class="reader-headline" id="modalTitle">শিরোনাম লোড হচ্ছে...</h1>
+          
+          <!-- Standard News Image Viewport -->
+          <div class="reader-image-viewport" id="modalImageViewport">
+            <img src="" alt="" id="modalImage">
+          </div>
 
-    // ==========================================
-    // Audio Waveform & Player Demo
-    // ==========================================
-    const audioToggleBtn = document.getElementById('audioToggleBtn');
-    const playPauseIcon = document.getElementById('playPauseIcon');
-    const soundWave = document.getElementById('soundWave');
-    const previewPlayerBtn = document.getElementById('previewPlayerBtn');
-    let isPlaying = false;
+          <!-- TV Channel & YouTube Video Player Viewport -->
+          <div class="modal-video-wrapper" id="modalVideoWrapper" style="display: none;">
+            <iframe id="modalVideoIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            
+            <!-- Video Bottom Marquee / Banner Ad Overlay -->
+            <div class="video-bottom-ad-bar" id="videoBottomAdBar" onclick="handleVideoBottomAdClick(event)">
+              <div class="video-ad-left">
+                <span class="video-ad-badge">বিজ্ঞাপন</span>
+                <span class="video-ad-sponsor" id="videoAdSponsor">দারাজ বাংলাদেশ</span>
+              </div>
+              <div class="video-ad-marquee-wrap">
+                <div class="video-ad-marquee-track" id="videoAdMarqueeTrack">
+                  <span class="video-ad-ticker-text" id="videoAdTickerText">দারাজ গ্র্যান্ড সুপার সেল — স্মার্টফোন ও ইলেকট্রনিক্সে ৬০% পর্যন্ত মেগা ছাড়! ফ্রি ডেলিভারি অফার চলছে।</span>
+                </div>
+              </div>
+              <div class="video-ad-right">
+                <span class="video-ad-timer-pill" title="প্রতি ৩০ সেকেন্ডে স্বয়ংক্রিয় রিফ্রেশ">⏱ ৩০ সে.</span>
+                <a class="video-ad-cta-btn" id="videoAdCtaBtn" href="https://www.daraz.com.bd" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">অফার দেখুন ↗</a>
+                <button class="video-ad-close-btn" id="videoAdCloseBtn" title="বিজ্ঞাপন লুকান" onclick="dismissVideoAd(event)">✕</button>
+              </div>
+            </div>
+          </div>
 
-    // Web Audio Synthesizer for instant audible vibe
-    let audioCtx = null;
-    let oscillator = null;
-    let gainNode = null;
+          <div class="reader-text-content" id="modalContent">
+            <!-- Text content rendered here -->
+          </div>
+        </div>
 
-    function togglePlayback() {
-      isPlaying = !isPlaying;
+        <div class="reader-modal-footer">
+          <div class="modal-footer-reactions">
+            <button class="rx-btn rx-like-btn" id="modalLikeBtn" title="পছন্দ" onclick="reactToArticle(event, this, 'like')">
+              👍 <span class="rx-count" id="modalLikeCount">১২৮</span>
+            </button>
+            <button class="rx-btn rx-dislike-btn" id="modalDislikeBtn" title="অপছন্দ" onclick="reactToArticle(event, this, 'dislike')">
+              👎
+            </button>
+          </div>
+          <div class="modal-footer-right">
+            <span class="original-notice">মূল প্রতিবেদন পড়ুন:</span>
+            <a href="#" class="read-original-btn" id="modalOriginalLink" target="_blank" rel="noopener noreferrer">
+              মূল উৎস খুলুন ↗
+            </a>
+          </div>
+        </div>
+      </div>
 
-      if (isPlaying) {
-        soundWave.classList.add('playing');
-        playPauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
-        triggerToast('Playing: ' + document.getElementById('nowPlayingTitle').textContent);
-        startAmbientDrone();
-      } else {
-        soundWave.classList.remove('playing');
-        playPauseIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
-        stopAmbientDrone();
-      }
-    }
+      <!-- Right Skyscraper Test Ad Slot -->
+      <aside class="modal-side-ad modal-side-ad-right" id="modalSideAdRight" onclick="handleSideAdClick(1)">
+        <div class="side-ad-header">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="side-ad-badge">📢 টেস্ট অ্যাড</span>
+            <span class="side-ad-refresh-badge" title="বিজ্ঞাপন পলিসি অনুযায়ী প্রতি ৩০ সেকেন্ডে রিফ্রেশ">⏱ ৩০ সে.</span>
+          </div>
+          <span class="side-ad-info-btn" title="বিজ্ঞাপন তথ্য">•••</span>
+        </div>
+        <div class="side-ad-media">
+          <img id="sideAdRightImg" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&q=80" alt="টেস্ট বিজ্ঞাপন">
+        </div>
+        <div class="side-ad-body">
+          <div class="side-ad-sponsor-row">
+            <span class="side-ad-avatar" style="background: #ea580c;">দ</span>
+            <span class="side-ad-sponsor" id="sideAdRightSponsor">দারাজ বাংলাদেশ</span>
+          </div>
+          <h4 class="side-ad-title" id="sideAdRightTitle">দারাজ গ্র্যান্ড সুপার সেল — স্মার্টফোন ও গ্যাজেটে ৬০% মেগা ছাড়!</h4>
+          <p class="side-ad-desc" id="sideAdRightDesc">ফ্রি হোম ডেলিভারি ও ভাউচার ডিসকাউন্টে আজই আপনার পছন্দের পণ্য অর্ডার করুন।</p>
+          <button class="side-ad-action-btn" id="sideAdRightCta">শপিং করুন ↗</button>
+          <span class="side-ad-disclaimer">স্পনসরড বিজ্ঞাপন প্লেসমেন্ট</span>
+        </div>
+      </aside>
 
-    function startAmbientDrone() {
-      try {
-        if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
-        oscillator = audioCtx.createOscillator();
-        gainNode = audioCtx.createGain();
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(220, audioCtx.currentTime); // Gentle A3 ambient note
-        
-        // Gentle soft fade in
-        gainNode.gain.setValueAtTime(0.001, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 1.2);
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        oscillator.start();
-      } catch (e) {
-        // Fallback gracefully if Web Audio is blocked by browser policy
-      }
-    }
+    </div>
+  </div>
 
-    function stopAmbientDrone() {
-      if (gainNode && audioCtx) {
-        try {
-          gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
-          setTimeout(() => {
-            if (oscillator) {
-              oscillator.stop();
-              oscillator.disconnect();
-              oscillator = null;
-            }
-          }, 500);
-        } catch (e) {}
-      }
-    }
+  <!-- =========================================================================
+       9. SAVED BOOKMARKS MODAL
+       ========================================================================= -->
+  <div class="reader-modal-overlay" id="savedBookmarksModal">
+    <div class="reader-modal-box saved-list-modal">
+      <div class="reader-modal-header">
+        <div class="reader-meta-group">
+          <span class="source-tag">🔖 সংরক্ষিত কনটেন্ট তালিকা</span>
+        </div>
+        <button class="icon-btn close-btn" id="closeBookmarksModalBtn">×</button>
+      </div>
+      <div class="saved-bookmarks-list" id="savedArticlesContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
 
-    audioToggleBtn.addEventListener('click', togglePlayback);
-    previewPlayerBtn.addEventListener('click', () => {
-      document.getElementById('playerCard').scrollIntoView({ behavior: 'smooth' });
-      if (!isPlaying) togglePlayback();
-    });
+  <!-- =========================================================================
+       10. REAL-TIME TOAST NOTIFICATIONS
+       ========================================================================= -->
+  <div class="portal-toast" id="portalToast">
+    <span class="toast-dot"></span>
+    <span id="toastMessage">নোটিফিকেশন</span>
+  </div>
 
-    // Select different track from showcase cards
-    document.querySelectorAll('.select-track-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const title = btn.getAttribute('data-title');
-        const artist = btn.getAttribute('data-artist');
-        document.getElementById('nowPlayingTitle').textContent = title;
-        document.getElementById('nowPlayingArtist').textContent = artist + ' • High-Def Audio';
-        if (!isPlaying) {
-          togglePlayback();
-        } else {
-          triggerToast('Now Playing: ' + title);
-        }
-      });
-    });
-
-    // ==========================================
-    // Filter Tabs Interaction
-    // ==========================================
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const vibeCards = document.querySelectorAll('.vibe-item-card');
-
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const filterValue = btn.getAttribute('data-filter');
-
-        vibeCards.forEach(card => {
-          const category = card.getAttribute('data-category');
-          if (filterValue === 'all' || category === filterValue) {
-            card.style.display = 'flex';
-            card.style.animation = 'fadeInUp 0.4s ease forwards';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      });
-    });
-
-    // ==========================================
-    // Like Counter Interactivity
-    // ==========================================
-    document.querySelectorAll('.like-counter-btn').forEach(button => {
-      button.addEventListener('click', () => {
-        const isLiked = button.classList.contains('liked');
-        const countSpan = button.querySelector('.like-number');
-        let currentCount = parseInt(countSpan.textContent.replace(/,/g, ''), 10);
-
-        if (!isLiked) {
-          button.classList.add('liked');
-          countSpan.textContent = (currentCount + 1).toLocaleString();
-          triggerToast('Liked this vibe! ❤️');
-        } else {
-          button.classList.remove('liked');
-          countSpan.textContent = (currentCount - 1).toLocaleString();
-        }
-      });
-    });
-
-    // ==========================================
-    // Toast Notification Utility
-    // ==========================================
-    const toastBox = document.getElementById('toastBox');
-    const toastMessage = document.getElementById('toastMessage');
-    let toastTimeout = null;
-
-    function triggerToast(msg) {
-      if (toastTimeout) clearTimeout(toastTimeout);
-      toastMessage.textContent = msg;
-      toastBox.classList.add('show');
-      toastTimeout = setTimeout(() => {
-        toastBox.classList.remove('show');
-      }, 3200);
-    }
-
-    // ==========================================
-    // Newsletter Subscription Form
-    // ==========================================
-    function handleNewsletterSubmit(e) {
-      e.preventDefault();
-      const emailInput = document.getElementById('userEmail');
-      const feedback = document.getElementById('newsletterFeedback');
-      const email = emailInput.value.trim();
-
-      if (email) {
-        feedback.className = 'newsletter-feedback success';
-        feedback.textContent = '🎉 Welcome to BD Vibe! Confirmation email dispatched.';
-        triggerToast('Subscribed successfully to BD Vibe!');
-        emailInput.value = '';
-      }
-    }
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
