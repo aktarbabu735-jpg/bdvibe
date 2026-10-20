@@ -203,6 +203,102 @@ function getHijriDate(date = new Date()) {
   return `${toBengaliNumber(hDay)} ${hMonth} ${toBengaliNumber(y)} হিজরি`;
 }
 
+function getAstroPanjikaData(date = new Date()) {
+  const dayOfWeek = date.getDay(); // 0 Sunday, 3 Wednesday
+
+  // 1. Lunar Phase & Illumination
+  const knownNewMoon = new Date('2024-01-11T11:57:00Z').getTime();
+  const synodicMonth = 29.53058867 * 86400 * 1000;
+  const diff = date.getTime() - knownNewMoon;
+  const phaseCycle = (diff % synodicMonth + synodicMonth) % synodicMonth;
+  const moonAgeDays = phaseCycle / (86400 * 1000);
+
+  // Illumination %
+  const illumination = Math.round(50 * (1 - Math.cos((moonAgeDays / 29.53058867) * 2 * Math.PI)));
+
+  // Moonrise & Moonset approximation (Dhaka standard)
+  const riseMinutesTotal = Math.round((6 * 60 + moonAgeDays * 49.5) % (24 * 60));
+  const setMinutesTotal = (riseMinutesTotal + 12 * 60 + 25) % (24 * 60);
+
+  const formatTime = (mins) => {
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    const h12 = h % 12 || 12;
+    const period = (h >= 4 && h < 12) ? 'সকাল' : (h >= 12 && h < 16) ? 'দুপুর' : (h >= 16 && h < 19) ? 'সন্ধ্যা' : 'রাত';
+    return `${period} ${toBengaliNumber(String(h12).padStart(2, '0'))}:${toBengaliNumber(String(m).padStart(2, '0'))} মি.`;
+  };
+
+  const moonRiseStr = formatTime(riseMinutesTotal);
+  const moonSetStr = formatTime(setMinutesTotal);
+
+  // 2. Nakshatra calculation (27 nakshatras)
+  const nakshatraNames = [
+    'অশ্বিনী', 'ভরণী', 'কৃত্তিকা', 'রোহিণী', 'মৃগশিরা', 'আর্দ্রা', 
+    'পুনর্বসু', 'পুষ্যা', 'অশ্লেষা', 'মঘা', 'পূর্বফাল্গুনী', 'উত্তরফাল্গুনী', 
+    'হস্তা', 'চিত্রা', 'স্বাতী', 'বিশাখা', 'অনুরাধা', 'জ্যেষ্ঠা', 
+    'মূল', 'পূর্বাষাঢ়া', 'উত্তরাষাঢ়া', 'শ্রবণা', 'ধনিষ্ঠা', 'শতভিষা', 
+    'পূর্বভাদ্রপদ', 'উত্তরভাদ্রপদ', 'রেবতী'
+  ];
+  const nakshatraIndex = Math.floor(((date.getTime() / 86400000 + 4) % 27 + 27) % 27);
+  const currentNakshatra = nakshatraNames[nakshatraIndex];
+
+  // 3. Yoga & Karana
+  const yogaNames = [
+    'বিষ্কুম্ভ', 'প্রীতি', 'আয়ুষ্মান', 'সৌভাগ্য', 'শোভন', 'অতিগণ্ড', 'সুকর্মা', 
+    'ধৃতি', 'শূল', 'গণ্ড', 'বৃদ্ধি', 'ধ্রুব', 'ব্যাঘাত', 'হর্ষণ', 'বজ্র', 
+    'সিদ্ধি', 'ব্যতিপাত', 'বরীয়ান', 'পরিঘ', 'শিব', 'সিদ্ধ', 'সাধ্য', 'শুভ', 
+    'শুক্ল', 'ব্রহ্ম', 'ইন্দ্র', 'বৈধৃতি'
+  ];
+  const currentYoga = yogaNames[Math.floor(((date.getTime() / 86400000 + 11) % 27 + 27) % 27)];
+  
+  const karanaNames = ['বব', 'বালব', 'কৌলব', 'তৈতিল', 'গর', 'বণিজ', 'বিষ্টি (ভদ্রা)'];
+  const currentKarana = karanaNames[Math.floor(moonAgeDays * 2) % karanaNames.length];
+
+  // 4. Barabela & Kalabela per day of week (Dhaka standard)
+  const barabelaSchedule = [
+    { name: 'রবিবার', kalabela: 'সন্ধ্যা ০৪:০০ - ০৫:৩০ মি.', barabela: 'সকাল ১১:৩০ - ০১:০০ মি.', dishashool: 'পশ্চিম দিক' },
+    { name: 'সোমবার', kalabela: 'সকাল ০৭:৩০ - ০৯:০০ মি.', barabela: 'দুপুর ০১:০০ - ০২:৩০ মি.', dishashool: 'পূর্ব দিক' },
+    { name: 'মঙ্গলবার', kalabela: 'দুপুর ০১:৩০ - ০৩:০০ মি.', barabela: 'সকাল ০৬:০০ - ০৭:৩০ মি.', dishashool: 'উত্তর দিক' },
+    { name: 'বুধবার', kalabela: 'দুপুর ১২:০০ - ০১:৩০ মি.', barabela: 'সকাল ১০:৩০ - ১২:০০ মি.', dishashool: 'উত্তর দিক' },
+    { name: 'বৃহস্পতিবার', kalabela: 'দুপুর ০১:৩০ - ০৩:০০ মি.', barabela: 'দুপুর ০২:৩০ - ০৪:০০ মি.', dishashool: 'দক্ষিণ দিক' },
+    { name: 'শুক্রবার', kalabela: 'সকাল ০৯:০০ - ১০:৩০ মি.', barabela: 'সকাল ০৭:৩০ - ০৯:০০ মি.', dishashool: 'পশ্চিম দিক' },
+    { name: 'শনিবার', kalabela: 'সকাল ০৬:০০ - ০৭:৩০ মি.', barabela: 'সকাল ০৯:০০ - ১০:৩০ মি.', dishashool: 'পূর্ব দিক' }
+  ];
+  const todayAstroTimes = barabelaSchedule[dayOfWeek];
+
+  // 5. Parban & Vrat from month & tithi
+  const tithiIndex = Math.floor((moonAgeDays / 29.53058867) * 30);
+  const isShukla = tithiIndex < 15;
+  const tithiNum = (tithiIndex % 15) + 1;
+
+  let parban = 'আজকের বিশেষ ব্রত ও দেবঅর্চনা';
+  if (tithiNum === 11) parban = isShukla ? 'পাপঙ্কুশা একাদশী ব্রত ও উপবাস' : 'রম্ভা / রমা একাদশী ব্রত';
+  else if (tithiNum === 12) parban = 'গোবৎস ও মহা দ্বাদশী ব্রত';
+  else if (tithiNum === 13) parban = 'প্রদোষ ব্রত ও বিশেষ শিব আরাধনা';
+  else if (tithiNum === 14) parban = isShukla ? 'শ্রী সত্যনারায়ণ ব্রত ও শ্রী অনন্ত চতুর্দশী' : 'নরক চতুর্দশী ও চৌদ্দ প্রদীপ প্রজ্বলন';
+  else if (tithiNum === 15) parban = isShukla ? 'শ্রী শ্রী কোজাগরী লক্ষ্মী পূজা ও পূর্ণিমা' : 'শ্রী শ্রী শ্যামা পূজা ও দীপাবলি মহোৎসব';
+  else if (tithiNum === 10) parban = 'বিজয়াদশমী স্মারক ও দশমী তিথি';
+
+  // 6. Islamic Special: Ayyam al-Bid (13, 14, 15 Hijri)
+  const hijriDayApprox = Math.floor(moonAgeDays) + 1;
+  const daysToAyyamAlBid = Math.max(0, 13 - hijriDayApprox);
+
+  return {
+    moonAgeDays: moonAgeDays.toFixed(1),
+    illumination,
+    moonRiseStr,
+    moonSetStr,
+    currentNakshatra,
+    currentYoga,
+    currentKarana,
+    parban,
+    kalabela: todayAstroTimes.kalabela,
+    barabela: todayAstroTimes.barabela,
+    dishashool: todayAstroTimes.dishashool,
+    daysToAyyamAlBid
+  };
+}
+
 function renderTodayCalendarTrending() {
   const container = document.getElementById('trendingChipsWrap');
   if (!container) return;
@@ -222,6 +318,7 @@ function renderTodayCalendarTrending() {
 
   const hijriDateFull = getHijriDate(now);
   const lunar = getLunarDetails(now);
+  const astro = getAstroPanjikaData(now);
 
   const purnimaText = lunar.daysToPurnima === 0 
     ? 'আজ পূর্ণিমা তিথি! 🌕' 
@@ -247,9 +344,7 @@ function renderTodayCalendarTrending() {
     { sign: 'মীন', symbol: '♓', text: 'মানসিক শান্তি ও আধ্যাত্মিক প্রফুল্লতা' }
   ];
 
-
-
-  // Build Pill Items
+  // Comprehensive Almanac & Astronomical Items (জ্যোতিষ, পঞ্জিকা, ইসলাম ও আকাশ পর্যবেক্ষণ)
   const items = [
     // 1. English Date
     `<div class="cal-pill cal-pill-en" onclick="showToast('আজকের ইংরেজি তারিখ: ${enDateFull}')">
@@ -279,19 +374,54 @@ function renderTodayCalendarTrending() {
       <span class="cal-pill-val">${lunar.tithi}</span>
     </div>`,
 
-    // 5. Purnima Countdown
+    // 5. Nakshatra (জ্যোতিষীদের বিশেষ নক্ষত্র)
+    `<div class="cal-pill cal-pill-tithi" onclick="showToast('আজকের নক্ষত্র: ${astro.currentNakshatra} নক্ষত্র')">
+      <span class="cal-pill-icon">⭐</span>
+      <span class="cal-pill-label">নক্ষত্র:</span>
+      <span class="cal-pill-val">${astro.currentNakshatra} নক্ষত্র</span>
+    </div>`,
+
+    // 6. Yoga & Karana (যোগ ও করণ)
+    `<div class="cal-pill cal-pill-tithi" onclick="showToast('আজকের যোগ: ${astro.currentYoga} যোগ এবং করণ: ${astro.currentKarana} করণ')">
+      <span class="cal-pill-icon">🧘</span>
+      <span class="cal-pill-label">যোগ ও করণ:</span>
+      <span class="cal-pill-val">${astro.currentYoga} যোগ • ${astro.currentKarana} করণ</span>
+    </div>`,
+
+    // 7. Parban & Vrat (ব্রত ও ধর্মীয় পার্বণ)
+    `<div class="cal-pill cal-pill-bn" onclick="showToast('আজকের ব্রত ও পার্বণ: ${astro.parban}')">
+      <span class="cal-pill-icon">🪔</span>
+      <span class="cal-pill-label">ব্রত ও পার্বণ:</span>
+      <span class="cal-pill-val">${astro.parban}</span>
+    </div>`,
+
+    // 8. Moon Sighting & Illumination (চাঁদ দেখা ও চন্দ্রকলা)
+    `<div class="cal-pill cal-pill-moon" onclick="showToast('আজকের চাঁদের বয়স ${toBengaliNumber(astro.moonAgeDays)} দিন এবং ${toBengaliNumber(astro.illumination)}% আলোকিত')">
+      <span class="cal-pill-icon">🌔</span>
+      <span class="cal-pill-label">চাঁদের বয়স:</span>
+      <span class="cal-pill-val">${toBengaliNumber(astro.moonAgeDays)} দিন (${toBengaliNumber(astro.illumination)}% আলোকিত)</span>
+    </div>`,
+
+    // 9. Moonrise & Moonset (চন্দ্রোদয় ও চন্দ্রাস্ত)
+    `<div class="cal-pill cal-pill-moon" onclick="showToast('আজকের চন্দ্রোদয় ${astro.moonRiseStr} এবং চন্দ্রাস্ত ${astro.moonSetStr}')">
+      <span class="cal-pill-icon">🌙</span>
+      <span class="cal-pill-label">চন্দ্রোদয়:</span>
+      <span class="cal-pill-val">${astro.moonRiseStr} • 🌘 চন্দ্রাস্ত: ${astro.moonSetStr}</span>
+    </div>`,
+
+    // 10. Purnima Countdown
     `<div class="cal-pill cal-pill-moon" onclick="showToast('${purnimaText}')">
       <span class="cal-pill-icon">🌕</span>
       <span class="cal-pill-val">${purnimaText}</span>
     </div>`,
 
-    // 6. Amavasya Countdown
+    // 11. Amavasya Countdown
     `<div class="cal-pill cal-pill-moon" onclick="showToast('${amavasyaText}')">
       <span class="cal-pill-icon">🌑</span>
       <span class="cal-pill-val">${amavasyaText}</span>
     </div>`,
 
-    // 7. Sunrise & Sunset
+    // 12. Sunrise & Sunset
     `<div class="cal-pill cal-pill-sun" onclick="showToast('আজকের সূর্যোদয় ভোর ৫:৫৬ মি. এবং সূর্যাস্ত সন্ধ্যা ৫:২৯ মি.')">
       <span class="cal-pill-icon">☀️</span>
       <span class="cal-pill-label">সূর্যোদয়:</span>
@@ -301,7 +431,41 @@ function renderTodayCalendarTrending() {
       <span class="cal-pill-val">সন্ধ্যা ৫:২৯ মি.</span>
     </div>`,
 
-    // 8. Auspicious Time / Amritayog
+    // 13. Sehri & Iftar for Nafl / Sunnah Fasting
+    `<div class="cal-pill cal-pill-hijri" onclick="showToast('নফল রোজার সেহরি শেষ ভোর ০৪:৩৯ মি. এবং ইফতার সন্ধ্যা ০৫:২৯ মি.')">
+      <span class="cal-pill-icon">🍽️</span>
+      <span class="cal-pill-label">সেহরি শেষ:</span>
+      <span class="cal-pill-val">ভোর ০৪:৩৯ মি.</span>
+      <span class="cal-pill-icon">🕌</span>
+      <span class="cal-pill-label">ইফতার:</span>
+      <span class="cal-pill-val">সন্ধ্যা ০৫:২৯ মি.</span>
+    </div>`,
+
+    // 14. Tahajjud & Ishraq
+    `<div class="cal-pill cal-pill-hijri" onclick="showToast('তাহাজ্জুদের উত্তম ওয়াক্ত শেষ ভোর ০৪:২৫ মি. এবং ইশরাক শুরু সকাল ০৬:১৫ মি.')">
+      <span class="cal-pill-icon">✨</span>
+      <span class="cal-pill-label">তাহাজ্জুদ শেষ:</span>
+      <span class="cal-pill-val">ভোর ০৪:২৫</span>
+      <span class="cal-pill-icon">☀️</span>
+      <span class="cal-pill-label">ইশরাক শুরু:</span>
+      <span class="cal-pill-val">সকাল ০৬:১৫</span>
+    </div>`,
+
+    // 15. Ayyam al-Bid (আইয়ামে বিজ রোজা কাউন্টডাউন)
+    `<div class="cal-pill cal-pill-hijri" onclick="showToast('হিজরি মাসের ১৩, ১৪ ও ১৫ তারিখের বিশেষ সুন্নত রোজা')">
+      <span class="cal-pill-icon">🌙</span>
+      <span class="cal-pill-label">আইয়ামে বিজ:</span>
+      <span class="cal-pill-val">${astro.daysToAyyamAlBid === 0 ? 'আজ আইয়ামে বিজ রোজা!' : `আর ${toBengaliNumber(astro.daysToAyyamAlBid)} দিন বাকি (১৩-১৫ হিজরি)`}</span>
+    </div>`,
+
+    // 16. Abhijit Muhurat (সর্বশ্রেষ্ঠ শুভক্ষণ)
+    `<div class="cal-pill cal-pill-amrita" onclick="showToast('অভিজিৎ মুহূর্ত দিনের সর্বশ্রেষ্ঠ শুভ সময় (সকাল ১১:৩৮ - ১২:২৬ মি.)')">
+      <span class="cal-pill-icon">🌟</span>
+      <span class="cal-pill-label">অভিজিৎ মুহূর্ত:</span>
+      <span class="cal-pill-val">সকাল ১১:৩৮ - ১২:২৬ মি. (সর্বশ্রেষ্ঠ শুভক্ষণ)</span>
+    </div>`,
+
+    // 17. Auspicious Time / Amritayog
     `<div class="cal-pill cal-pill-amrita" onclick="showToast('অমৃতযোগ: সকাল ০৮:১৫ - ১০:৩০ মি. | রাহুকাল: দুপুর ১২:০০ - ০১:৩০ মি.')">
       <span class="cal-pill-icon">✨</span>
       <span class="cal-pill-label">অমৃতযোগ:</span>
@@ -311,7 +475,21 @@ function renderTodayCalendarTrending() {
       <span class="cal-pill-val">১২:০০-০১:৩০</span>
     </div>`,
 
-    // 9. Rashifals (১২ রাশিফল)
+    // 18. Kalabela & Barabela (শুভকর্মে বর্জনীয় সময়)
+    `<div class="cal-pill cal-pill-sun" onclick="showToast('কালবেলা ও বারবেলা শুভকর্মে বর্জনীয় সময়: ${astro.kalabela}')">
+      <span class="cal-pill-icon">⚠️</span>
+      <span class="cal-pill-label">কালবেলা:</span>
+      <span class="cal-pill-val">${astro.kalabela} (বর্জনীয়)</span>
+    </div>`,
+
+    // 19. Dishashool (দিকশূল ও শুভ যাত্রা দিক)
+    `<div class="cal-pill cal-pill-tithi" onclick="showToast('আজকের দিকশূল ${astro.dishashool}; যাত্রার শুভ বিকল্প দক্ষিণ ও পূর্ব দিক')">
+      <span class="cal-pill-icon">🧭</span>
+      <span class="cal-pill-label">দিকশূল:</span>
+      <span class="cal-pill-val">${astro.dishashool} (যাত্রায় সতর্কতা)</span>
+    </div>`,
+
+    // 20. Rashifals (১২ রাশির সম্পূর্ণ দৈনিক রাশিফল)
     ...rashifalList.map(r => `
       <div class="cal-pill cal-pill-rashi" onclick="showToast('আজকের ${r.sign} রাশিফল: ${r.text}')">
         <span class="cal-pill-icon">${r.symbol}</span>
