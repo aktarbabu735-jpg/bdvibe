@@ -30,7 +30,9 @@ db.exec(`
     pub_date TEXT,
     timestamp INTEGER NOT NULL,
     is_breaking INTEGER DEFAULT 0,
-    views INTEGER DEFAULT 0
+    views INTEGER DEFAULT 0,
+    meta_title TEXT,
+    meta_description TEXT
   );
 
   CREATE INDEX IF NOT EXISTS idx_articles_category ON articles(category);
@@ -78,6 +80,14 @@ db.exec(`
     impressions INTEGER DEFAULT 0
   );
 `);
+
+// Safe column migrations
+try {
+  db.exec('ALTER TABLE articles ADD COLUMN meta_title TEXT;');
+} catch (_) {}
+try {
+  db.exec('ALTER TABLE articles ADD COLUMN meta_description TEXT;');
+} catch (_) {}
 
 // Insert default Sources if empty or update them
 const countSources = db.prepare('SELECT COUNT(*) as count FROM sources').get();
@@ -153,8 +163,22 @@ module.exports = {
     const existing = db.prepare('SELECT id, guid FROM articles WHERE title = ? OR guid = ?').get(cleanTitle, article.guid);
     if (existing) {
       if (article.guid === existing.guid) {
-        db.prepare('UPDATE articles SET description = ?, image_url = COALESCE(?, image_url), category = ? WHERE id = ?')
-          .run(article.description || '', article.image_url || null, article.category, existing.id);
+        db.prepare(`
+          UPDATE articles 
+          SET description = ?, 
+              image_url = COALESCE(?, image_url), 
+              category = ?,
+              meta_title = COALESCE(?, meta_title),
+              meta_description = COALESCE(?, meta_description)
+          WHERE id = ?
+        `).run(
+          article.description || '', 
+          article.image_url || null, 
+          article.category,
+          article.meta_title || null,
+          article.meta_description || null,
+          existing.id
+        );
       }
       return false;
     }
@@ -162,13 +186,16 @@ module.exports = {
     const stmt = db.prepare(`
       INSERT INTO articles (
         guid, title, link, source, source_id, category, description,
-        content, image_url, pub_date, timestamp, is_breaking
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        content, image_url, pub_date, timestamp, is_breaking,
+        meta_title, meta_description
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON CONFLICT(guid) DO UPDATE SET
         title = excluded.title,
         description = excluded.description,
         image_url = COALESCE(excluded.image_url, articles.image_url),
-        category = excluded.category
+        category = excluded.category,
+        meta_title = COALESCE(excluded.meta_title, articles.meta_title),
+        meta_description = COALESCE(excluded.meta_description, articles.meta_description)
     `);
 
     try {
@@ -184,7 +211,9 @@ module.exports = {
         article.image_url || null,
         article.pub_date || new Date().toISOString(),
         article.timestamp || Date.now(),
-        article.is_breaking ? 1 : 0
+        article.is_breaking ? 1 : 0,
+        article.meta_title || null,
+        article.meta_description || null
       );
       return true;
     } catch (err) {

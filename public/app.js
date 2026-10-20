@@ -1813,6 +1813,23 @@ function openReaderModal(article, isLoadingFull = false) {
   refreshModalSideAds(false);
   startGlobalAdAutoRefresh();
 
+  // Dynamic SEO Meta & Title Updates for Article
+  if (article.meta_title || article.title) {
+    document.title = article.meta_title || `${article.title} | BDVibe`;
+  }
+  const metaDescTag = document.querySelector('meta[name="description"]');
+  if (metaDescTag && (article.meta_description || article.description)) {
+    metaDescTag.setAttribute('content', article.meta_description || article.description);
+  }
+  const ogTitleTag = document.querySelector('meta[property="og:title"]');
+  if (ogTitleTag && (article.meta_title || article.title)) {
+    ogTitleTag.setAttribute('content', article.meta_title || article.title);
+  }
+  const ogDescTag = document.querySelector('meta[property="og:description"]');
+  if (ogDescTag && (article.meta_description || article.description)) {
+    ogDescTag.setAttribute('content', article.meta_description || article.description);
+  }
+
   const titleEl = document.getElementById('modalTitle');
   if (titleEl) titleEl.textContent = article.title;
 
@@ -1901,6 +1918,21 @@ function closeReaderModal() {
   const modal = document.getElementById('articleReaderModal');
   if (modal) modal.classList.remove('active');
   document.body.style.overflow = '';
+
+  // Reset Document Title & Meta Tags
+  document.title = 'BDVibe — নেক্সট-জেন ডিজিটাল কনটেন্ট ও মিডিয়া হাব';
+  const metaDescTag = document.querySelector('meta[name="description"]');
+  if (metaDescTag) {
+    metaDescTag.setAttribute('content', 'বাংলাদেশের সকল শীর্ষস্থানীয় সোর্স থেকে রাজনীতি, অর্থনীতি, প্রযুক্তি, লাইফস্টাইল, শিক্ষা, কৃষি, ক্যারিয়ার ও সমসাময়িক সকল ডিজিটাল কনটেন্টের আধুনিক কেন্দ্রীয় প্ল্যাটফর্ম।');
+  }
+  const ogTitleTag = document.querySelector('meta[property="og:title"]');
+  if (ogTitleTag) {
+    ogTitleTag.setAttribute('content', 'BDVibe — নেক্সট-জেন ডিজিটাল কনটেন্ট ও মিডিয়া হাব');
+  }
+  const ogDescTag = document.querySelector('meta[property="og:description"]');
+  if (ogDescTag) {
+    ogDescTag.setAttribute('content', 'বাংলাদেশের সকল শীর্ষস্থানীয় সোর্স থেকে রাজনীতি, অর্থনীতি, প্রযুক্তি, লাইফস্টাইল, শিক্ষা, কৃষি, ক্যারিয়ার ও সমসাময়িক সকল ডিজিটাল কনটেন্টের আধুনিক কেন্দ্রীয় প্ল্যাটফর্ম।');
+  }
 
   // Stop video playback instantly
   const videoIframe = document.getElementById('modalVideoIframe');

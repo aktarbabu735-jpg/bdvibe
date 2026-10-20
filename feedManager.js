@@ -1,6 +1,7 @@
 const Parser = require('rss-parser');
 const cron = require('node-cron');
 const { saveArticle, saveVideo, db } = require('./database');
+const { transformNewsItem } = require('./newsTransformer');
 
 const parser = new Parser({
   timeout: 10000,
@@ -414,26 +415,36 @@ async function updateFeeds() {
 
         const guid = item.guid || item.id || item.link;
 
+        // Apply Transformation Layer: Engaging punchy headlines, hook descriptions, and auto meta tags
+        const transformed = transformNewsItem({
+          title: cleanTitle,
+          description: cleanDesc,
+          content: item.content || item.contentEncoded || cleanDesc,
+          source: feedConfig.name
+        }, category, feedConfig.name);
+
         const isBreaking = (
-          cleanTitle.includes('ব্রেকিং') ||
-          cleanTitle.includes('জরুরি') ||
-          cleanTitle.includes('গুরুত্বপূর্ণ') ||
+          transformed.title.includes('ব্রেকিং') ||
+          transformed.title.includes('জরুরি') ||
+          transformed.title.includes('গুরুত্বপূর্ণ') ||
           (Date.now() - timestamp < 3600000 && Math.random() > 0.8)
         ) ? 1 : 0;
 
         const saved = saveArticle({
           guid,
-          title: cleanTitle,
+          title: transformed.title,
           link: item.link,
           source: feedConfig.name,
           source_id: feedConfig.id,
           category,
-          description: cleanDesc.slice(0, 400),
+          description: transformed.description,
           content: item.content || item.contentEncoded || cleanDesc,
           image_url: imageUrl,
           pub_date: pubDateObj.toISOString(),
           timestamp,
-          is_breaking: isBreaking
+          is_breaking: isBreaking,
+          meta_title: transformed.meta_title,
+          meta_description: transformed.meta_description
         });
 
         if (saved) {
@@ -500,19 +511,30 @@ async function updateFeeds() {
         // 2. Also save as an Article so TV News shows up inside news categories & feeds!
         const tvCategory = isLive ? 'live' : classifyArticle(vItem, 'national');
         const tvSnippet = `${yt.channel}-এর বিশেষ সরাসরি সম্প্রচার ও সর্বশেষ ভিডিও বুলেটিন। সমসাময়িক জাতীয় গুরুত্বপূর্ণ খবরের বিস্তারিত প্রতিবেদন।`;
+        
+        // Apply Transformation Layer for TV articles
+        const transformedTv = transformNewsItem({
+          title: cleanTitle,
+          description: tvSnippet,
+          content: `${cleanTitle} — ${yt.channel} সরাসরি সম্প্রচার ও বিশেষ ভিডিও বুলেটিন। বিস্তারিত দেখতে ভিডিও প্রতিবেদনটি দেখুন।`,
+          source: yt.channel
+        }, tvCategory, yt.channel);
+
         const savedArticle = saveArticle({
           guid: `tv-${rawVideoId}`,
-          title: cleanTitle,
+          title: transformedTv.title,
           link: vItem.link,
           source: yt.channel,
           source_id: yt.id,
           category: tvCategory,
-          description: tvSnippet,
-          content: `${cleanTitle} — ${yt.channel} সরাসরি সম্প্রচার ও বিশেষ ভিডিও বুলেটিন। বিস্তারিত দেখতে ভিডিও প্রতিবেদনটি দেখুন।`,
+          description: transformedTv.description,
+          content: `${transformedTv.title} — ${yt.channel} সরাসরি সম্প্রচার ও বিশেষ ভিডিও বুলেটিন। বিস্তারিত দেখতে ভিডিও প্রতিবেদনটি দেখুন।`,
           image_url: thumbnail,
           pub_date: pubDateObj.toISOString(),
           timestamp,
-          is_breaking: isLive ? 1 : 0
+          is_breaking: isLive ? 1 : 0,
+          meta_title: transformedTv.meta_title,
+          meta_description: transformedTv.meta_description
         });
 
         if (savedArticle) totalSaved++;
