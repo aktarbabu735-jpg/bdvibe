@@ -4056,3 +4056,272 @@ body.dark-theme .spinner-small {
   border-color: #4da6ff;
   border-top-color: transparent;
 }
+
+/* ==========================================================================
+   12. MOBILE & TABLET ULTRA-FLUID RESPONSIVE ENGINE (100% Mobile Friendly)
+   ========================================================================== */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 860px) {
+  /* Header Adjustments */
+  .msn-header-container {
+    height: 58px;
+    padding: 0 14px;
+    gap: 10px;
+  }
+  
+  .msn-clock-pill,
+  .msn-weather-pill {
+    display: none !important;
+  }
+
+  .msn-nav-stripe {
+    top: 58px;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Global Container Padding */
+  .msn-container,
+  .msn-header-container,
+  .msn-nav-container,
+  .msn-footer-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  /* Compact Mobile Header */
+  .msn-header-container {
+    height: 54px;
+    gap: 8px;
+  }
+
+  .msn-header-left {
+    gap: 8px;
+  }
+
+  .msn-waffle-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .msn-logo-main {
+    font-size: 1.35rem;
+    letter-spacing: -0.5px;
+  }
+
+  .msn-logo-tag {
+    display: none;
+  }
+
+  .msn-search-wrap {
+    margin: 0;
+  }
+
+  .msn-search-bar {
+    height: 36px;
+    padding: 0 10px;
+    gap: 6px;
+  }
+
+  .msn-search-bar input {
+    font-size: 0.84rem;
+  }
+
+  .msn-header-right {
+    gap: 6px;
+  }
+
+  .msn-icon-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+  }
+
+  /* Touch-Friendly Horizontal Nav Ribbon */
+  .msn-nav-stripe {
+    top: 54px;
+    height: 42px;
+  }
+
+  .msn-nav-container {
+    height: 42px;
+    gap: 4px;
+    padding: 0 10px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-tab {
+    padding: 4px 11px;
+    font-size: 0.82rem;
+  }
+
+  /* Single-Column Crisp Feed */
+  .msn-dense-stream-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    margin-top: 10px;
+  }
+
+  .msn-news-card {
+    height: auto !important;
+    min-height: 290px;
+    border-radius: 12px;
+  }
+
+  .msn-news-card .card-media {
+    height: 180px !important;
+    aspect-ratio: 16 / 9;
+  }
+
+  .msn-news-card .card-content {
+    padding: 12px 14px 10px;
+  }
+
+  .msn-news-card .card-title {
+    font-size: 15.5px;
+    line-height: 1.34;
+    -webkit-line-clamp: 2;
+  }
+
+  .msn-news-card .card-snippet {
+    font-size: 12.8px;
+    line-height: 1.38;
+    -webkit-line-clamp: 2;
+    margin-top: 5px;
+  }
+
+  .msn-news-card .card-footer {
+    padding-top: 8px;
+    margin-top: 6px;
+  }
+
+  .rx-btn {
+    padding: 4px 10px;
+    font-size: 12px;
+    min-height: 30px;
+  }
+
+  /* Widgets on Mobile */
+  .msn-widget-card {
+    height: auto !important;
+    min-height: 275px;
+    padding: 12px;
+  }
+
+  /* Full Screen Mobile Reader Modal */
+  .reader-modal-overlay {
+    padding: 0 !important;
+    background: rgba(0, 0, 0, 0.85);
+  }
+
+  .reader-modal-layout-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    max-height: 100vh !important;
+    gap: 0 !important;
+  }
+
+  .reader-modal-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .reader-modal-header {
+    padding: 10px 14px;
+  }
+
+  .reader-modal-body {
+    padding: 14px 16px 20px;
+  }
+
+  .reader-headline {
+    font-size: 1.32rem;
+    line-height: 1.36;
+    margin-bottom: 12px;
+  }
+
+  .reader-text-content {
+    font-size: 1.02rem;
+    line-height: 1.78;
+  }
+
+  .reader-modal-footer {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .read-original-btn {
+    padding: 6px 12px;
+    font-size: 0.82rem;
+  }
+
+  /* Mobile Video Bottom Bar Ad */
+  .video-bottom-ad-bar {
+    height: 38px;
+    padding: 0 8px;
+    gap: 6px;
+  }
+
+  .video-ad-badge {
+    font-size: 0.65rem;
+    padding: 1px 5px;
+  }
+
+  .video-ad-sponsor {
+    font-size: 0.74rem;
+  }
+
+  .video-ad-ticker-text {
+    font-size: 0.76rem;
+  }
+
+  .video-ad-timer-pill {
+    display: none;
+  }
+
+  .video-ad-cta-btn {
+    font-size: 0.72rem;
+    padding: 3px 8px;
+  }
+
+  /* Mobile App Drawer */
+  .waffle-drawer-content {
+    width: 86vw;
+    max-width: 320px;
+  }
+
+  /* Mobile Footer */
+  .msn-footer {
+    padding: 24px 0 20px;
+  }
+
+  .footer-top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  .footer-bottom-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
