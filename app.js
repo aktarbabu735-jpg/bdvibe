@@ -523,20 +523,47 @@ function initLiveDate() {
   setInterval(renderTodayCalendarTrending, 3600000);
 }
 
-// Real-Time Auto Polling Engine (Every 20 Seconds)
+// ==========================================================================
+// 10-Minute Seamless Zero-Jerk Background Refresh Engine
+// প্রতি ১০ মিনিট পর পর স্বয়ংক্রিয় রিফ্রেশ, কোনো রকমের ঝাঁকুনি বা স্ক্রিন জাম্প ছাড়াই
+// ==========================================================================
+const BACKGROUND_REFRESH_INTERVAL_MS = 10 * 60 * 1000; // ১০ মিনিট (৬০০,০০০ মি.সে.)
 let lastPolledTimestamp = Date.now();
+
 function initRealtimeEngine() {
   setInterval(async () => {
     try {
+      // ১. ব্যাকএন্ডে নতুন ডেটা এসেছে কিনা নীরবে চেক করা
       const res = await fetch(`/api/news/latest-check?since=${lastPolledTimestamp}`);
       const data = await res.json();
-      if (data.success && data.hasNew) {
-        showToast(`🔔 ${toBengaliNumber(data.newCount)}টি নতুন কনটেন্ট যুক্ত হয়েছে!`);
-        lastPolledTimestamp = data.latestTimestamp;
-        loadSidebarData();
+
+      if (data && data.success) {
+        if (data.latestTimestamp) {
+          lastPolledTimestamp = data.latestTimestamp;
+        }
+
+        // ২. নতুন ডেটা নীরবে ফেচ করে ক্যাশে (Cache) যুক্ত করা, যাতে ভিজিটরের বর্তমান স্ক্রিন/পঠন অবস্থায় কোনো ঝাঁকুনি না হয়
+        const newsRes = await fetch('/api/news?limit=25&offset=0');
+        const newsData = await newsRes.json();
+
+        if (newsData && newsData.success && Array.isArray(newsData.articles)) {
+          // ইন-মেমোরি ক্যাশে তাৎক্ষণিকভাবে যুক্ত করা (ভিজিটরের বর্তমান ভিউ অক্ষুণ্ণ থাকে)
+          newsData.articles.forEach(article => {
+            if (article && article.id) {
+              articlesCache.set(Number(article.id), article);
+            }
+          });
+        }
+
+        // ৩. আবহাওয়া ও মুদ্রার মান নীরবে কোনো রি-রেন্ডার ছাড়াই টেক্সট আপডেট করা
+        if (typeof loadCurrencyAndWeather === 'function') {
+          loadCurrencyAndWeather();
+        }
       }
-    } catch (e) {}
-  }, 20000);
+    } catch (err) {
+      console.warn('[Background 10-min Refresh] Silent sync notice:', err);
+    }
+  }, BACKGROUND_REFRESH_INTERVAL_MS);
 }
 
 // BDVibe Theme Switcher (Default: Crisp Light, Toggle to Dark)
